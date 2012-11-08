@@ -1,0 +1,8 @@
+su postgres -c "dropdb Force"
+su postgres -c "dropuser pocock"
+
+CATAMI_DIR="/home/catami"
+
+if [ -d $CATAMI_DIR ]; then
+    rm -r $CATAMI_DIR
+fi

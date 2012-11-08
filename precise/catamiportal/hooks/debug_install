@@ -91,4 +91,33 @@ python manage.py syncdb --noinput
 #juju-log "set up Django superuser"
 su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_name, last_name, email, password, is_staff, is_active, is_superuser,last_login,date_joined) values (1, 'pocock','catami','catami', 'catami@ivec.org', '0ac737144798e2a0857c7bf34f984bce',true,true,true,'2012-11-01 14:26:20','2012-11-01 14:26:20')\""
 
+
+#==================================================#
+# Download and install solr
+#==================================================#
+#juju-log "pulling and installing solr"
+echo pulling and installing solr
+cd ..
+wget  http://mirrors.gigenet.com/apache/lucene/solr/4.0.0-BETA/apache-solr-4.0.0-BETA.zip
+unzip apache-solr-4.0.0-BETA.zip
+cd apache-solr-4.0.0-BETA
+cd example
+nohup java -jar start.jar &
+
+cd ../../catami
+sh src/install_search.sh
+
+python manage.py rebuild_index --noinput
+python manage.py update_index
+
+
+
+#==================================================#
+# Set up Apache port reverse proxy
+#==================================================#
+a2enmod proxy_http
+a2enmod rewrite
+
+
 #juju-log "catamiportal install complete"
+echo DONE!!

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eux
+
+juju-log "Installing Apache2, Django1.4, postgres, postgis via apt-get"
+apt-get install -y python-django postgresql-9.1 apache2
+
+juju-log "Installing catamiportal via apt-get"
+apt-add-repository -y ppa:catami/dev & apt-get update
+apt-get install catamiportal
+
+juju-log "catamiportal install complete"

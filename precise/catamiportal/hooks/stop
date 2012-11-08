@@ -1,0 +1,4 @@
+#!/bin/bash
+juju-log "Stopping Machine"
+/etc/init.d/apache2 stop
+/etc/init.d/postgres stop

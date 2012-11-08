@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eux # -x for verbose logging to juju debug-log
+hooksdir=$PWD
+user=`relation-get user`
+password=`relation-get password`
+host=`relation-get host`
+database=`relation-get database`
+# All values are set together, so checking on a single value is enough
+# If $user is not set, DB is still setting itself up, we exit awaiting next run
+[ -z "$user" ] && exit 0
+juju-log "Setting up catamiportal for the first time"
+relation-set ip=`unit-get private-address`
+
+#cd /var/www/juju && chown www-data sites/default/settings.php
+open-port 8000/tcp
+open-port 5432/tcp

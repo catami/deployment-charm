@@ -103,6 +103,14 @@ python manage.py rebuild_index --noinput
 python manage.py update_index
 
 #==================================================#
+# setup initial migration for South
+#==================================================#
+juju-log "Installing South"
+python manage.py schemamigration Force --initial
+python manage.py migrate Force --fake
+python manage.py migrate Force
+
+#==================================================#
 # Set up Apache port reverse proxy
 #==================================================#
 a2enmod proxy_http

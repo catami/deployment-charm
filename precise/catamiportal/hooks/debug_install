@@ -110,7 +110,13 @@ sh src/install_search.sh
 python manage.py rebuild_index --noinput
 python manage.py update_index
 
-
+#==================================================#
+# setup initial migration for South
+#==================================================#
+echo Installing South
+python manage.py schemamigration Force --initial
+python manage.py migrate Force --fake
+python manage.py migrate Force
 
 #==================================================#
 # Set up Apache port reverse proxy

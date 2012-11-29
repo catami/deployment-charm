@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eux
-
+CATAMI_HOME=/home/catami/catamiportal
 #==================================================#
 # These should be just the server requirements only 
 # !! Exception being scipy for now. pip install not 
@@ -70,7 +70,7 @@ easy_install pip
 juju-log "Pulling CATAMI code from git"
 
 mkdir -p /home/catami
-mkdir -p /home/catami/catamiportal
+mkdir -p $CATAMI_HOME
 cd /home/catami/catamiportal
 git clone https://github.com/catami/catami.git
 cd catami
@@ -117,4 +117,18 @@ a2enmod proxy_http
 a2enmod rewrite
 
 juju-log "catamiportal install complete"
+
+#==================================================#
+# Add cron job to do a daily backup.
+#==================================================#
+juju-log "Creating cron job for backup"
+BAKSCRIPT=/etc/cron.daily/catamiPortalBak.py
+touch $BAKSCRIPT
+echo #! /usr/bin/env python > $BAKSCRIPT
+echo import os > $BAKSCRIPT
+echo os.chdir(chdir($CATAMI_HOME/catami))
+echo import rebels.administratorbot as administratorbot >$BAKSCRIPT
+echo bender = administratorbot.robot() > $BAKSCRIPT
+echo bender.make_local_backup(directory=\'$CATAMI_HOME/catami/rebels/backup/\') > $BAKSCRIPT
+
 echo DONE!!

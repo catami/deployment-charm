@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 
 set -eux
-
+CATAMI_HOME=/home/catami/catamiportal
 #==================================================#
 # These should be just the server requirements only 
 # !! Exception being scipy for now. pip install not 
@@ -124,6 +124,35 @@ python manage.py migrate Force
 a2enmod proxy_http
 a2enmod rewrite
 
+echo "catamiportal install complete"
+
+#==================================================#
+# Add cron job to do a daily backup.
+#==================================================#
+export DJANGO_SETTINGS_MODULE=catamiPortal.settings
+
+
+#==================================================#
+# hoping for the best 
+#==================================================#
+# add the current directory and the parent directory to PYTHONPATH
+# sets DJANGO_SETTINGS_MODULE
+
+echo "Creating cron job for backup"
+BAKSCRIPT=/etc/cron.daily/catamiPortalBak.py
+sudo touch $BAKSCRIPT
+sudo echo \#! /usr/bin/env python >> $BAKSCRIPT
+sudo echo import os >> $BAKSCRIPT
+sudo echo import sys >> $BAKSCRIPT
+sudo echo os.chdir\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami/rebels\'\) >> $BAKSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
+sudo echo os.environ\[\'DJANGO_SETTINGS_MODULE\' \] = \"catamiPortal.settings\" >> $BAKSCRIPT
+sudo echo import rebels.administratorbot as administratorbot >> $BAKSCRIPT
+sudo echo bender = administratorbot.Robot\(\) >> $BAKSCRIPT
+sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/rebels/backup/\'\) >> ${BAKSCRIPT}
+
+chmod +x $BAKSCRIPT
 
 #juju-log "catamiportal install complete"
 echo DONE!!

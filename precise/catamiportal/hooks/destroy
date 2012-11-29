@@ -1,5 +1,12 @@
+su postgres -c "dropdb test_Force"
 su postgres -c "dropdb Force"
 su postgres -c "dropuser pocock"
+
+CRON_BAK_FILE="/etc/cron.daily/catamiPortalBak.py"
+
+if [ -f $CRON_BAK_FILE ]; then
+    rm $CRON_BAK_FILE
+fi
 
 CATAMI_DIR="/home/catami"
 

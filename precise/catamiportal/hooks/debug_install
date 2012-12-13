@@ -106,9 +106,14 @@ su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_na
 # setup initial migration for South
 #==================================================#
 echo Doing south migration
-python manage.py schemamigration Force --initial
-python manage.py migrate Force 0001 --fake
-python manage.py migrate staging 0001 --fake
+#python manage.py schemamigration Force --initial
+#python manage.py migrate Force 0001 --fake
+#python manage.py migrate staging 0001 --fake
+
+python manage.py schemamigration Force --auto
+python manage.py migrate Force
+python manage.py schemamigration staging --auto
+python manage.py migrate staging
 
 #==================================================#
 # Download and install solr

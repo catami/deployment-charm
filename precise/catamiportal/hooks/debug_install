@@ -122,10 +122,14 @@ cd apache-solr-4.0.0-BETA
 cd example
 nohup java -jar start.jar &
 
+echo installing search
 cd ../../catami
 sh src/install_search.sh
 
+echo rebuilding index
 python manage.py rebuild_index --noinput
+
+echo updating index
 python manage.py update_index
 
 #==================================================#

@@ -8,7 +8,7 @@ CATAMI_HOME=/home/catami/catamiportal
 # working
 #==================================================#
 #juju-log "Installing Apache2, Django1.4, postgres, postgis via apt-get"
-apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git
+apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip
 
 #==================================================#
 # setup the posgis template for postgresql

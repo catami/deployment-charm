@@ -75,6 +75,9 @@ rmvirtualenv catami
 mkvirtualenv catami --system-site-packages
 workon catami
 
+#sometimes it can take a little while for the virtualenv to be initiated, just hold up for a second before continuing
+sleep 5s
+
 #==================================================#
 # Pull the catami code from git and install 
 #==================================================#

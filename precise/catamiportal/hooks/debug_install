@@ -68,6 +68,13 @@ easy_install virtualenv
 easy_install virtualenvwrapper
 easy_install pip
 
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+rmvirtualenv catami
+mkvirtualenv catami --system-site-packages
+workon catami
+
 #==================================================#
 # Pull the catami code from git and install 
 #==================================================#

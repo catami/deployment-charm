@@ -98,23 +98,23 @@ pip install -r requirements.txt
 #juju-log "syncing database"
 python manage.py syncdb --noinput
 
-
-#juju-log "set up Django superuser"
-su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_name, last_name, email, password, is_staff, is_active, is_superuser,last_login,date_joined) values (1, 'pocock','catami','catami', 'catami@ivec.org', '0ac737144798e2a0857c7bf34f984bce',true,true,true,'2012-11-01 14:26:20','2012-11-01 14:26:20')\""
-
 #==================================================#
 # setup initial migration for South
 #==================================================#
 echo Doing south migration
 ./manage.py reset Force
 python manage.py schemamigration Force --initial
-python manage.py migrate Force 0001 --fake
-python manage.py migrate Force
+#python manage.py migrate Force 0001 --fake
+python manage.py migrate Force --fake
 
 ./manage.py reset staging
 python manage.py schemamigration staging --initial
-python manage.py migrate staging 0001 --fake
-python manage.py migrate staging
+#python manage.py migrate staging 0001 --fake
+python manage.py migrate staging --fake
+
+#juju-log "set up Django superuser"
+su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_name, last_name, email, password, is_staff, is_active, is_superuser,last_login,date_joined) values (1, 'pocock','catami','catami', 'catami@ivec.org', '0ac737144798e2a0857c7bf34f984bce',true,true,true,'2012-11-01 14:26:20','2012-11-01 14:26:20')\""
+
 
 #==================================================#
 # Download and install solr

@@ -102,12 +102,12 @@ python manage.py syncdb --noinput
 # setup initial migration for South
 #==================================================#
 echo Doing south migration
-./manage.py reset Force
+./manage.py reset Force --noinput
 python manage.py schemamigration Force --initial
 #python manage.py migrate Force 0001 --fake
 python manage.py migrate Force --fake
 
-./manage.py reset staging
+./manage.py reset staging --noinput
 python manage.py schemamigration staging --initial
 #python manage.py migrate staging 0001 --fake
 python manage.py migrate staging --fake

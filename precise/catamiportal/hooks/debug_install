@@ -173,12 +173,12 @@ sudo echo \#! /usr/bin/env python >> $BAKSCRIPT
 sudo echo import os >> $BAKSCRIPT
 sudo echo import sys >> $BAKSCRIPT
 sudo echo os.chdir\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
-sudo echo sys.path.append\(\'$CATAMI_HOME/catami/rebels\'\) >> $BAKSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami/dbadmintool\'\) >> $BAKSCRIPT
 sudo echo sys.path.append\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
 sudo echo os.environ\[\'DJANGO_SETTINGS_MODULE\' \] = \"catamiPortal.settings\" >> $BAKSCRIPT
-sudo echo import rebels.administratorbot as administratorbot >> $BAKSCRIPT
+sudo echo import dbadmintool.administratorbot as administratorbot >> $BAKSCRIPT
 sudo echo bender = administratorbot.Robot\(\) >> $BAKSCRIPT
-sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/rebels/backup/\'\) >> ${BAKSCRIPT}
+sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/dbadmintool/backup/\'\) >> ${BAKSCRIPT}
 
 chmod +x $BAKSCRIPT
 

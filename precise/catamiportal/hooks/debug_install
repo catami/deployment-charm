@@ -101,19 +101,27 @@ python manage.py syncdb --noinput
 #==================================================#
 # setup initial migration for South
 #==================================================#
-echo Doing south migration
-./manage.py reset Force --noinput
-python manage.py schemamigration Force --initial
-#python manage.py migrate Force 0001 --fake
-python manage.py migrate Force --fake
+# guardian easy_thumbnails
+# ADD NEW APPS TO THIS LIST
+apps=(guardian Force staging dbadmintool easy_thumbnails userena)
+for app in "${apps[@]}"; do
+    echo Doing south migration for ${app}
+    ./manage.py reset ${app} --noinput
+    python manage.py schemamigration ${app} --initial
+#    python manage.py syncdb --noinput
+#    python manage.py migrate ${app} 0001 --fake
+    python manage.py migrate ${app} --fake
+    #python manage.py migrate ${app}
+done
 
-./manage.py reset staging --noinput
-python manage.py schemamigration staging --initial
-#python manage.py migrate staging 0001 --fake
-python manage.py migrate staging --fake
+#python manage.py syncdb --noinput
+
+#python manage.py migrate
+
+python manage.py check_permissions
 
 #juju-log "set up Django superuser"
-su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_name, last_name, email, password, is_staff, is_active, is_superuser,last_login,date_joined) values (1, 'pocock','catami','catami', 'catami@ivec.org', '0ac737144798e2a0857c7bf34f984bce',true,true,true,'2012-11-01 14:26:20','2012-11-01 14:26:20')\""
+su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_name, last_name, email, password, is_staff, is_active, is_superuser,last_login,date_joined) values (-2, 'pocock','catami','catami', 'catami@ivec.org', '0ac737144798e2a0857c7bf34f984bce',true,true,true,'2012-11-01 14:26:20','2012-11-01 14:26:20')\""
 
 
 #==================================================#

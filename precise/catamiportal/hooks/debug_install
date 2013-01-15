@@ -11,7 +11,7 @@
 # opt 2)
 # sudo ./debug_install -f <credential file>
 # opt 3)
-# sudo ./debug_install # defaults to looking in ~/<credential file>
+# sudo ./debug_install # defaults to looking in ~/catami.cred
 #
 # CREDENTIAL FILE
 # LINE 1 #Comment

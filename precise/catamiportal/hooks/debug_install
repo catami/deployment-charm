@@ -199,15 +199,15 @@ cd apache-solr-4.0.0-BETA
 cd example
 nohup java -jar start.jar &
 
-echo installing search
-cd ../../catami
-sh src/install_search.sh
+#echo installing search
+#cd ../../catami
+#sh src/install_search.sh
 
-echo rebuilding index
-python manage.py rebuild_index --noinput
+#echo rebuilding index
+#python manage.py rebuild_index --noinput
 
-echo updating index
-python manage.py update_index
+#echo updating index
+#python manage.py update_index
 
 #==================================================#
 # Set up Apache port reverse proxy
@@ -218,7 +218,7 @@ a2enmod rewrite
 echo "catamiportal install complete"
 
 #==================================================#
-# Add cron job to do a daily backup.
+# Add cron job to do a hourly backup.
 #==================================================#
 export DJANGO_SETTINGS_MODULE=catamiPortal.settings
 

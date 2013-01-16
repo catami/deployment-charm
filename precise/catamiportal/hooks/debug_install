@@ -11,7 +11,7 @@
 # opt 2)
 # sudo ./debug_install -f <credential file>
 # opt 3)
-# sudo ./debug_install # defaults to looking in ~/catami.cred
+# sudo ./debug_install # defaults to looking in ~/.catami.cred
 #
 # CREDENTIAL FILE
 # LINE 1 #Comment
@@ -74,7 +74,7 @@ echo "user=$U_NAME, password=$PASSWORD"
 apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip
 
 #==================================================#
-# setup the posgis template for postgresql
+# SETUP THE POSGIS TEMPLATE FOR POSTGRESQL
 #==================================================#
 GEOGRAPHY=0
 POSTGIS_SQL=postgis.sql
@@ -124,7 +124,7 @@ sed -i "s/#port = 5432/port = 5432 #sed gen/" /etc/postgresql/9.1/main/postgresq
 /etc/init.d/postgresql restart
 
 #==================================================#
-# Setup the python environment
+# SETUP THE PYTHON ENVIRONMENT
 #==================================================#
 #juju-log "Setting up the python environment"
 easy_install virtualenv
@@ -142,7 +142,7 @@ easy_install pip
 #sleep 5s
 
 #==================================================#
-# Pull the catami code from git and install 
+# PULL THE CATAMI CODE FROM GIT AND INSTALL 
 #==================================================#
 #juju-log "Pulling CATAMI code from git"
 
@@ -188,7 +188,7 @@ su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_na
 
 
 #==================================================#
-# Download and install solr
+# DOWNLOAD AND INSTALL SOLR
 #==================================================#
 #juju-log "pulling and installing solr"
 echo pulling and installing solr
@@ -210,7 +210,7 @@ nohup java -jar start.jar &
 #python manage.py update_index
 
 #==================================================#
-# Set up Apache port reverse proxy
+# SET UP APACHE PORT REVERSE PROXY
 #==================================================#
 a2enmod proxy_http
 a2enmod rewrite
@@ -218,7 +218,7 @@ a2enmod rewrite
 echo "catamiportal install complete"
 
 #==================================================#
-# Add cron job to do a hourly backup.
+# ADD CRON JOB TO DO A HOURLY BACKUP.
 #==================================================#
 export DJANGO_SETTINGS_MODULE=catamiPortal.settings
 
@@ -244,6 +244,25 @@ sudo echo bender = administratorbot.Robot\(\) >> $BAKSCRIPT
 sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/dbadmintool/backup/\'\) >> ${BAKSCRIPT}
 
 chmod +x $BAKSCRIPT
+
+#==================================================#
+# ADD CRON SCRIPT TO LOG DATABASE DATA
+#==================================================#
+echo "Creating cron job for database logging"
+LOGSCRIPT=/etc/cron.hourly/catamiPortalLog.py
+sudo touch $LOGSCRIPT
+sudo echo \#! /usr/bin/env python >> $LOGSCRIPT
+sudo echo import os >> $LOGSCRIPT
+sudo echo import sys >> $LOGSCRIPT
+sudo echo os.chdir\(\'$CATAMI_HOME/catami\'\) >> $LOGSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami/dbadmintool\'\) >> $LOGSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami\'\) >> $LOGSCRIPT
+sudo echo os.environ\[\'DJANGO_SETTINGS_MODULE\' \] = \"catamiPortal.settings\" >> $LOGSCRIPT
+sudo echo import dbadmintool.administratorbot as administratorbot >> $LOGSCRIPT
+sudo echo dbReportBot = administratorbot.ReportTools\(\) >> $LOGSCRIPT
+sudo echo dbReportBot.collect_stats\(\) >> ${LOGSCRIPT}
+
+chmod +x $LOGSCRIPT
 
 #juju-log "catamiportal install complete"
 echo DONE!!

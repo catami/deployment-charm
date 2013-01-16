@@ -1,0 +1,11 @@
+#!/bin/bash -x
+
+#==================================================#
+# QUERY DJANGO TO GET A LIST OF INSTALLED APPS
+#==================================================#
+
+export DJANGO_SETTINGS_MODULE=catamiPortal.settings
+
+#>>> import myproject.settings
+#>>> [ app for app in myproject.settings.INSTALLED_APPS if not "django" in app ]
+#['myapp1', 'myapp2', 'myapp3']

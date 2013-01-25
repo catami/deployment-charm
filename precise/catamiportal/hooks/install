@@ -123,12 +123,19 @@ juju-log "catamiportal install complete"
 #==================================================#
 juju-log "Creating cron job for backup"
 BAKSCRIPT=/etc/cron.daily/catamiPortalBak.py
-touch $BAKSCRIPT
-echo #! /usr/bin/env python > $BAKSCRIPT
-echo import os > $BAKSCRIPT
-echo os.chdir(chdir($CATAMI_HOME/catami))
-echo import rebels.administratorbot as administratorbot >$BAKSCRIPT
-echo bender = administratorbot.robot() > $BAKSCRIPT
-echo bender.make_local_backup(directory=\'$CATAMI_HOME/catami/rebels/backup/\') > $BAKSCRIPT
+sudo touch $BAKSCRIPT
+sudo echo \#! /usr/bin/env python >> $BAKSCRIPT
+sudo echo import os >> $BAKSCRIPT
+sudo echo import sys >> $BAKSCRIPT
+sudo echo os.chdir\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami/rebels\'\) >> $BAKSCRIPT
+sudo echo sys.path.append\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
+sudo echo os.environ\[\'DJANGO_SETTINGS_MODULE\' \] = \"catamiPortal.settings\" >> $BAKSCRIPT
+sudo echo import rebels.administratorbot as administratorbot >> $BAKSCRIPT
+sudo echo bender = administratorbot.Robot\(\) >> $BAKSCRIPT
+sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/rebels/backup/\'\) >> ${BAKSCRIPT}
 
-echo DONE!!
+chmod +x $BAKSCRIPT
+
+juju-log "catamiportal install complete"
+

@@ -1,11 +1,49 @@
-#!/bin/bash -x
+#!/bin/bash 
+#-x
+
+CATAMI_HOME=/home/catami/catamiportal
+
+#==================================================#
+# PULL THE LATEST CODE REVISION
+#==================================================#
+cd $CATAMI_HOME"/catami"
+git pull https://github.com/catami/catami.git
 
 #==================================================#
 # QUERY DJANGO TO GET A LIST OF INSTALLED APPS
 #==================================================#
-
 export DJANGO_SETTINGS_MODULE=catamiPortal.settings
 
-#>>> import myproject.settings
-#>>> [ app for app in myproject.settings.INSTALLED_APPS if not "django" in app ]
-#['myapp1', 'myapp2', 'myapp3']
+cd $CATAMI_HOME"/catami"
+
+DJANGO_STRING="import catamiPortal.settings; print [ app for app in catamiPortal.settings.PROJECT_APPS if not \"django\" in app ]"
+
+DJANGO_APP_LIST=`python -c "${DJANGO_STRING}"`
+IFS=","
+set -- $DJANGO_APP_LIST
+
+#==================================================#
+# THE DJANGO LIST HAS SQUARE BRACKETS WE NEED TO
+# REMOVE AND APPOSTRAPHES AND SPACES
+#==================================================#
+
+declare -a apps_array=()
+for app in $@
+do 
+    temp_app=`echo ${app} | sed -r 's/\[//g' | sed -r 's/\]//g' | sed -r "s/'//g" | sed -r 's/ //g'`
+    echo $temp_app
+    #apps_array=("${apps_array[@]}",$app) #append the filterd app
+
+    #==================================================#
+    # MIGRATE ALL OF THE APPS
+    #==================================================#
+
+    echo Doing south migration for ${temp_app}
+    python manage.py migrate ${temp_app}
+
+done
+
+# For userena
+python manage.py check_permissions
+
+echo DONE!!

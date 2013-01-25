@@ -193,9 +193,9 @@ su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_na
 #juju-log "pulling and installing solr"
 echo pulling and installing solr
 cd ..
-wget  http://mirrors.gigenet.com/apache/lucene/solr/4.0.0/apache-solr-4.0.0.zip
-unzip apache-solr-4.0.0.zip
-cd apache-solr-4.0.0
+wget  http://mirrors.gigenet.com/apache/lucene/solr/4.1.0/apache-solr-4.1.0.zip
+unzip apache-solr-4.1.0.zip
+cd apache-solr-4.1.0
 cd example
 nohup java -jar start.jar &
 

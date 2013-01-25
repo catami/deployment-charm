@@ -166,10 +166,14 @@ python manage.py syncdb --noinput
 #==================================================#
 # guardian easy_thumbnails
 # ADD NEW APPS TO THIS LIST
-apps=(guardian Force staging dbadmintool easy_thumbnails userena)
+apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection)
 for app in "${apps[@]}"; do
     echo Doing south migration for ${app}
-    ./manage.py reset ${app} --noinput
+    if [ "${app}" != 'clustering' ] ; then
+        echo "reseting app ${app}"
+        ./manage.py reset ${app} --noinput
+    fi
+
     python manage.py schemamigration ${app} --initial
 #    python manage.py syncdb --noinput
 #    python manage.py migrate ${app} 0001 --fake
@@ -191,13 +195,13 @@ su postgres -c "psql -d Force -c \"insert into auth_user (id, username, first_na
 # DOWNLOAD AND INSTALL SOLR
 #==================================================#
 #juju-log "pulling and installing solr"
-echo pulling and installing solr
-cd ..
-wget  http://mirrors.gigenet.com/apache/lucene/solr/4.1.0/apache-solr-4.1.0.zip
-unzip apache-solr-4.1.0.zip
-cd apache-solr-4.1.0
-cd example
-nohup java -jar start.jar &
+#echo pulling and installing solr
+#cd ..
+#wget  http://mirrors.gigenet.com/apache/lucene/solr/4.1.0/apache-solr-4.1.0.zip
+#unzip apache-solr-4.1.0.zip
+#cd apache-solr-4.1.0
+#cd example
+#nohup java -jar start.jar &
 
 #echo installing search
 #cd ../../catami

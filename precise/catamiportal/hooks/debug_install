@@ -166,6 +166,9 @@ python manage.py syncdb --noinput
 #==================================================#
 # guardian easy_thumbnails
 # ADD NEW APPS TO THIS LIST
+
+#!!! accounts may need to be after accounts in the following list of apps
+
 apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection)
 for app in "${apps[@]}"; do
     echo Doing south migration for ${app}

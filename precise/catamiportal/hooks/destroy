@@ -9,13 +9,16 @@ CATAMI_DIR="/home/catami"
 #==================================================#
 echo "Destroying database, test database and superuser" 
 su postgres -c "dropdb test_Force"
-su postgres -c "dropdb Force"
 su postgres -c "dropuser pocock"
+
+apps=(guardian Force staging dbadmintool easy_thumbnails userena clustering collection features)
+for app in "${apps[@]}"; do
+    su postgres -c "dropdb ${app}"
+done
 
 #==================================================#
 # REMOVE THE LOG FILES
 #==================================================#
-
 echo "Removing log files"
 
 if [ -f $CRON_BAK_FILE ]; then
@@ -29,10 +32,19 @@ fi
 #==================================================#
 # REMOVE ANY OLD INSTALL DIRECTORIES
 #==================================================#
-
 echo "removing "$CATAMI_DIR
 
 if [ -d $CATAMI_DIR ]; then
     rm -r $CATAMI_DIR
 fi
 
+#==================================================#
+# REMOVE TOMCAT AND GEOSERVER
+#==================================================#
+sudo service tomcat7 stop
+sudo rm -r /var/lib/tomcat7/webapps/geoserver
+#sudo apt-get remove --purge tomcat
+sudo service tomcat7 start
+
+#bug fix -- not sure why need this twice
+su postgres -c "dropuser pocock"

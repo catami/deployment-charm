@@ -112,7 +112,7 @@ fi
 # SETUP THE DATABASE AND USERS
 #==================================================#
 
-su postgres -c "createuser -R -A -d -U postgres $U_NAME"
+su postgres -c "createuser -Rs -A -d -U postgres $U_NAME"
 su postgres -c "createdb -E utf8 -O $U_NAME -T template_postgis Force"
 su postgres -c "psql -c \"ALTER USER $U_NAME WITH PASSWORD '$PASSWORD';\""
 
@@ -311,9 +311,15 @@ curl -u admin:geoserver -v -XPOST -H 'Content-type: text/xml' \
 curl -u admin:geoserver -XPOST -T datastore-config.xml -H 'Content-type: text/xml' \
   http://localhost:8080/geoserver/rest/workspaces/catami/datastores ;
 
+#for deployment images
 curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
   -d '<featureType><name>Force_image</name></featureType>' \
   http://localhost:8080/geoserver/rest/workspaces/catami/datastores/CatamiImagePoints/featuretypes ;
+
+#for collection images
+curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
+    -d "<featureType><name>collection_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>collection_images</name><sql>SELECT &quot;public&quot;.&quot;Force_image&quot;.&quot;id&quot;, &quot;public&quot;.&quot;Force_image&quot;.&quot;deployment_id&quot;, &quot;public&quot;.&quot;Force_image&quot;.&quot;left_thumbnail_reference&quot;, &quot;public&quot;.&quot;Force_image&quot;.&quot;left_image_reference&quot;, &quot;public&quot;.&quot;Force_image&quot;.&quot;date_time&quot;, &quot;public&quot;.&quot;Force_image&quot;.&quot;depth&quot;, &#xd;&quot;public&quot;.&quot;Force_image&quot;.&quot;image_position&quot;,&#xd;&quot;public&quot;.&quot;collection_collection_images&quot;.&quot;collection_id&quot; FROM &quot;public&quot;.&quot;collection_collection_images&quot;, &quot;public&quot;.&quot;Force_image&quot; WHERE &quot;public&quot;.&quot;collection_collection_images&quot;.&quot;image_id&quot;=&quot;public&quot;.&quot;Force_image&quot;.&quot;id&quot;</sql><keyColumn>id</keyColumn><geometry><name>image_position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
+    http://localhost:8080/geoserver/rest/workspaces/catami/datastores/CatamiImagePoints/featuretypes ;
 
 #if doing this on an existing server with same style name that has been deleted from geoserver,
 #need to actually delete the styles/catami-colour-by-depth.sld file first - geoserver does not delete it for some reason

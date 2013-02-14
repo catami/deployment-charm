@@ -171,8 +171,8 @@ python manage.py syncdb --noinput
 # ADD NEW APPS TO THIS LIST
 
 #!!! accounts may need to be after accounts in the following list of apps
-
-apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection)
+python manage.py migrate guardian --fake
+apps=(accounts Force staging dbadmintool easy_thumbnails userena clustering collection)
 for app in "${apps[@]}"; do
     echo Doing south migration for ${app}
     if [ "${app}" != 'clustering' ] ; then
@@ -180,7 +180,7 @@ for app in "${apps[@]}"; do
         ./manage.py reset ${app} --noinput
     fi
 
-    python manage.py schemamigration ${app} --initial
+#    python manage.py schemamigration ${app} --initial
 #    python manage.py syncdb --noinput
 #    python manage.py migrate ${app} 0001 --fake
     python manage.py migrate ${app} --fake
@@ -189,7 +189,7 @@ done
 
 #python manage.py syncdb --noinput
 
-#python manage.py migrate
+python manage.py migrate
 
 python manage.py check_permissions
 
@@ -330,6 +330,6 @@ curl -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
 sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g"     /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
 sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /var/lib/tomcat7/webapps/geoserver/data/security/users.properties
 
-echo 'Restarting tomcaty'
+echo 'Restarting tomcat'
 sudo service tomcat7 restart
 

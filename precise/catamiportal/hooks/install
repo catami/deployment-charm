@@ -11,7 +11,7 @@ juju-log "Installing Apache2, Django1.4, postgres, postgis via apt-get"
 apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git
 
 #==================================================#
-# setup the posgis template for postgresql
+# SETUP THE POSTGIS TEMPLATE FOR POSTGRESQL
 #==================================================#
 GEOGRAPHY=0
 POSTGIS_SQL=postgis.sql
@@ -36,7 +36,7 @@ then
 fi
 
 #==================================================#
-# Setup the database and users
+# SETUP THE DATABASE AND USERS
 #==================================================#
 juju-log "setting up database and users"
 
@@ -57,7 +57,7 @@ juju-log "Restarting postgres"
 /etc/init.d/postgresql restart
 
 #==================================================#
-# Setup the python environment
+# SETUP THE PYTHON ENVIRONMENT
 #==================================================#
 juju-log "Setting up the python environment"
 easy_install virtualenv

@@ -331,6 +331,12 @@ curl -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
 sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g"     /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
 sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /var/lib/tomcat7/webapps/geoserver/data/security/users.properties
 
+#install geoserver templates
+sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/CatamiImagePoints/Force_image/
+
 echo 'Restarting tomcaty'
 sudo service tomcat7 restart
 

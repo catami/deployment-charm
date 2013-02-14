@@ -42,9 +42,5 @@ qmgr -c "set queue routequeue started = True"
 qmgr -c "set server default_queue = routequeue"
 qmgr -c "set server scheduling = True"
 
-
-
-#qterm
-
 echo pbsnodes -a
-
+ehco qstat -Q

@@ -172,20 +172,22 @@ python manage.py syncdb --noinput
 
 #!!! accounts may need to be after accounts in the following list of apps
 
-apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection waffle)
-for app in "${apps[@]}"; do
-    echo Doing south migration for ${app}
-    if [ "${app}" != 'clustering' ] ; then
-        echo "reseting app ${app}"
-        ./manage.py reset ${app} --noinput
-    fi
+python manage.py migrate --all
 
-    python manage.py schemamigration ${app} --initial
+#apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection waffle)
+#for app in "${apps[@]}"; do
+#    echo Doing south migration for ${app}
+#    if [ "${app}" != 'clustering' ] ; then
+#        echo "reseting app ${app}"
+#        ./manage.py reset ${app} --noinput
+#    fi
+
+#    python manage.py schemamigration ${app} --initial
 #    python manage.py syncdb --noinput
 #    python manage.py migrate ${app} 0001 --fake
-    python manage.py migrate ${app} --fake
+#    python manage.py migrate ${app} --fake
     #python manage.py migrate ${app}
-done
+#done
 
 #python manage.py syncdb --noinput
 

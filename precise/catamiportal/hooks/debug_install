@@ -172,7 +172,7 @@ python manage.py syncdb --noinput
 
 #!!! accounts may need to be after accounts in the following list of apps
 
-apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection)
+apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection waffle)
 for app in "${apps[@]}"; do
     echo Doing south migration for ${app}
     if [ "${app}" != 'clustering' ] ; then

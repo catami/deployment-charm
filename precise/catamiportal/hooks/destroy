@@ -5,6 +5,7 @@ CRON_BAK_FILE="/etc/cron.hourly/catamiPortalBak.py"
 CATAMI_DIR="/home/catami"
 
 service tomcat7 stop
+#sudo pip uninstall django-guardian easy-thumbnails
 
 #==================================================#
 # DESTORY THE DATABASE, TEST DATABASE AND SUPERUSER

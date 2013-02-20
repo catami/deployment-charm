@@ -5,6 +5,13 @@ NUM_CPUS=4
 apt-get install -y libtorque2 torque-common torque-mom torque-pam torque-scheduler torque-server
 
 #==================================================
+# SET UP THE SAME GROUP THAT CATAMI BELONGS TO
+# ON EPIC AND THE CURRENT USER
+#==================================================
+sudo groupadd partner464
+sudo usermod -a -G partner464 `whoami`
+
+#==================================================
 # KILL PBS SO WE CAN CHANGE SETTINGS
 #==================================================
 killall pbs_mom

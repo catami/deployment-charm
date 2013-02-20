@@ -8,7 +8,7 @@ apt-get install -y libtorque2 torque-common torque-mom torque-pam torque-schedul
 # SET UP THE SAME GROUP THAT CATAMI BELONGS TO
 # ON EPIC AND THE CURRENT USER
 #==================================================
-sudo groupadd partner464
+sudo groupadd partner464 #Partner 464 is the group on CATAMI belongs to on Epic
 sudo usermod -a -G partner464 `whoami`
 
 #==================================================

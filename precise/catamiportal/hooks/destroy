@@ -11,7 +11,7 @@ service tomcat7 stop
 # DESTORY THE DATABASE, TEST DATABASE AND SUPERUSER
 #==================================================#
 echo "Destroying database, test database and superuser" 
-su postgres -c "dropdb test_Force"
+su postgres -c "dropdb test_catamidb"
 su postgres -c "dropuser pocock"
 
 apps=(guardian Force staging dbadmintool easy_thumbnails userena clustering collection features)

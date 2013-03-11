@@ -194,7 +194,7 @@ python manage.py migrate --all
 #python manage.py migrate
 
 #load the waffle fixtures for feature switching
-python manage.py loaddata Force/fixtures/waffle.json
+python manage.py loaddata catamidb/fixtures/waffle.json
 
 python manage.py check_permissions
 

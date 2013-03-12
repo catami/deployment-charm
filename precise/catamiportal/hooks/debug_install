@@ -25,7 +25,7 @@ set -eux
 CATAMI_HOME=/home/catami/catamiportal
 MEDIA_ROOT=/media
 CREDFILE=~/.catami.cred
-GEOSERVER_WAIT_TIME=120 #secs
+GEOSERVER_WAIT_TIME=240 #secs
 
 mkdir -p /home/catami
 mkdir -p $CATAMI_HOME

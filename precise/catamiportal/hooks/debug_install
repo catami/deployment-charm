@@ -319,12 +319,12 @@ curl -u admin:geoserver -XPOST -T datastore-config.xml -H 'Content-type: text/xm
 
 #for catamidb images
 curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
-    -d "<featureType><name>catamidb_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>catamidb_images</name><sql>SELECT public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.id, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id=public.catamidb_image.id</sql><keyColumn>id</keyColumn><geometry><name>image_position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
+    -d "<featureType><name>catamidb_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>catamidb_images</name><sql>SELECT public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.id, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id=public.catamidb_image.id</sql><keyColumn>id</keyColumn><geometry><name>position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
     http://localhost:8080/geoserver/rest/workspaces/catami/datastores/catamidb/featuretypes ;
 
 #for collection images
 curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
-    -d "<featureType><name>collection_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>collection_images</name><sql>SELECT public.catamidb_image.id, public.collection_collection_images.collection_id, public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.collection_collection_images,public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id = public.catamidb_image.pose_id AND public.collection_collection_images.image_id=public.catamidb_image.id</sql><keyColumn>id</keyColumn><geometry><name>image_position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
+    -d "<featureType><name>collection_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>collection_images</name><sql>SELECT public.catamidb_image.id, public.collection_collection_images.collection_id, public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.collection_collection_images,public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id = public.catamidb_image.pose_id AND public.collection_collection_images.image_id=public.catamidb_image.id</sql><keyColumn>id</keyColumn><geometry><name>position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
     http://localhost:8080/geoserver/rest/workspaces/catami/datastores/catamidb/featuretypes ;
 
 
@@ -351,6 +351,8 @@ sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /v
 
   
 #install geoserver templates
+
+sed -i "s/MEDIA_HOST/'http://sandbox.catami.org/'/g" webinterface/templates/geoserver/content.ftl
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/

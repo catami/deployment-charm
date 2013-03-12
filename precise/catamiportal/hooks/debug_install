@@ -171,8 +171,6 @@ sed -i "s@$MEDIA_ROOT/import@STAGING_IMPORT_DIR_TEXT@g" $CATAMI_HOME/catami/cata
 sed -i "s@$MEDIA_ROOT/images@IMAGES_ROOT_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 sed -i "s@$MEDIA_ROOT/archive@STAGING_ARCHIVE_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
-cp local_settings.py $CATAMI_HOME/catami/catamiPortal
-
 #juju-log "syncing database"
 python manage.py syncdb --noinput
 
@@ -371,7 +369,7 @@ sed -i "s@MEDIA_HOST@http://sandbox.catami.org/@g" $CATAMI_HOME/catami/webinterf
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp $CATAMI_HOME/catamiwebinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/catamidb_images/
+sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/catamidb_images/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/collection_images/
 
 echo 'Restarting tomcat'

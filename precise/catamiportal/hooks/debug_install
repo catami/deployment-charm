@@ -34,6 +34,7 @@ mkdir -p $MEDIA_ROOT
 # Copy some files over for geoserver
 cp datastore-config.xml $CATAMI_HOME
 cp catami-colour-by-depth.sld $CATAMI_HOME
+cp local_settings.py $CATAMI_HOME
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -163,6 +164,15 @@ cd catami
 #juju-log "Pip installing python dependencies" 
 pip install -r requirements.txt
 
+# local_settings.py
+cp ../local_settings.py $CATAMI_HOME/catami/catamiPortal
+
+sed -i "s@$MEDIA_ROOT/import@STAGING_IMPORT_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
+sed -i "s@$MEDIA_ROOT/images@IMAGES_ROOT_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
+sed -i "s@$MEDIA_ROOT/archive@STAGING_ARCHIVE_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
+
+cp local_settings.py $CATAMI_HOME/catami/catamiPortal
+
 #juju-log "syncing database"
 python manage.py syncdb --noinput
 
@@ -176,6 +186,7 @@ python manage.py syncdb --noinput
 
 python manage.py migrate --all
 
+python manage.py syncdb --all
 #apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection waffle)
 #for app in "${apps[@]}"; do
 #    echo Doing south migration for ${app}
@@ -194,6 +205,7 @@ python manage.py migrate --all
 #python manage.py syncdb --noinput
 
 #python manage.py migrate
+
 
 #load the waffle fixtures for feature switching
 python manage.py loaddata catamidb/fixtures/waffle.json
@@ -232,15 +244,6 @@ su postgres -c "psql -d catamidb -c \"insert into auth_user (id, username, first
 #==================================================#
 a2enmod proxy_http
 a2enmod rewrite
-
-#==================================================#
-# local_settings.py
-#==================================================#
-sed -i "s/$MEDIA_ROOT\/import/STAGING_IMPORT_DIR_TEXT/g" local_settings.py
-sed -i "s/$MEDIA_ROOT\/images/IMAGES_ROOT_TEXT/g" local_settings.py
-sed -i "s/$MEDIA_ROOT\/archive/STAGING_ARCHIVE_DIR_TEXT/g" local_settings.py
-
-cp local_settings.py $CATAMI_HOME/catami/catamiPortal
 
 echo "catamiportal install complete"
 
@@ -364,7 +367,7 @@ sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /v
   
 #install geoserver templates
 
-sed -i "s/MEDIA_HOST/'http://sandbox.catami.org/'/g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
+sed -i "s@MEDIA_HOST@http://sandbox.catami.org/@g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/

@@ -23,11 +23,13 @@
 set -eux
 
 CATAMI_HOME=/home/catami/catamiportal
+MEDIA_ROOT=/media
 CREDFILE=~/.catami.cred
 GEOSERVER_WAIT_TIME=120 #secs
 
 mkdir -p /home/catami
 mkdir -p $CATAMI_HOME
+mkdir -p $MEDIA_ROOT
 
 # Copy some files over for geoserver
 cp datastore-config.xml $CATAMI_HOME
@@ -81,7 +83,7 @@ echo "user=$U_NAME, password=$PASSWORD"
 # working
 #==================================================#
 #juju-log "Installing Apache2, Django1.4, postgres, postgis via apt-get"
-apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip tomcat7
+apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip tomcat7 python-opencv
 
 #==================================================#
 # SETUP THE POSGIS TEMPLATE FOR POSTGRESQL
@@ -231,6 +233,15 @@ su postgres -c "psql -d catamidb -c \"insert into auth_user (id, username, first
 a2enmod proxy_http
 a2enmod rewrite
 
+#==================================================#
+# local_settings.py
+#==================================================#
+sed -i "s/$MEDIA_ROOT\/import/STAGING_IMPORT_DIR_TEXT/g" local_settings.py
+sed -i "s/$MEDIA_ROOT\/images/IMAGES_ROOT_TEXT/g" local_settings.py
+sed -i "s/$MEDIA_ROOT\/archive/STAGING_ARCHIVE_DIR_TEXT/g" local_settings.py
+
+cp local_settings.py $CATAMI_HOME/catami/catamiPortal
+
 echo "catamiportal install complete"
 
 #==================================================#
@@ -280,7 +291,8 @@ sudo echo dbReportBot.collect_stats\(\) >> ${LOGSCRIPT}
 chmod +x $LOGSCRIPT
 
 #juju-log "catamiportal install complete"
-echo DONE!!
+
+echo "... Done"
 
 #==================================================#
 # SETUP GEOSERVER
@@ -352,13 +364,13 @@ sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /v
   
 #install geoserver templates
 
-sed -i "s/MEDIA_HOST/'http://sandbox.catami.org/'/g" webinterface/templates/geoserver/content.ftl
+sed -i "s/MEDIA_HOST/'http://sandbox.catami.org/'/g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/catamidb_images/
-sudo cp webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/collection_images/
+sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp $CATAMI_HOME/catamiwebinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/catamidb_images/
+sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/collection_images/
 
-echo 'Restarting tomcaty'
+echo 'Restarting tomcat'
 sudo service tomcat7 restart
 

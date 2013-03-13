@@ -23,7 +23,7 @@
 set -eux
 
 CATAMI_HOME=/home/catami/catamiportal
-MEDIA_ROOT=/media
+MEDIA_ROOT=/home/catami/media
 CREDFILE=~/.catami.cred
 GEOSERVER_WAIT_TIME=240 #secs
 
@@ -35,6 +35,19 @@ mkdir -p $MEDIA_ROOT
 cp datastore-config.xml $CATAMI_HOME
 cp catami-colour-by-depth.sld $CATAMI_HOME
 cp local_settings.py $CATAMI_HOME
+
+# make media dirs and setup apache to serve imagery
+mkdir -p $MEDIA_ROOT/staging
+mkdir -p $MEDIA_ROOT/images
+mkdir -p $MEDIA_ROOT/archive
+chown -R 755 $MEDIA_ROOT/staging
+chown -R 755 $MEDIA_ROOT/images
+chown -R 755 $MEDIA_ROOT/archive
+
+sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
+
+cp 000-default /etc/apache2/sites-enabled/
+apache2ctl graceful
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD

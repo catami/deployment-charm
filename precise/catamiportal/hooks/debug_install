@@ -44,6 +44,7 @@ chown -R 755 $MEDIA_ROOT/staging
 chown -R 755 $MEDIA_ROOT/images
 chown -R 755 $MEDIA_ROOT/archive
 
+apache2ctl stop
 sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
 
 #==================================================#

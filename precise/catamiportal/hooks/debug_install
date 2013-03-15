@@ -38,14 +38,17 @@ cp local_settings.py $CATAMI_HOME
 
 # make media dirs and setup apache to serve imagery
 mkdir -p $MEDIA_ROOT/staging
-mkdir -p $MEDIA_ROOT/images
+mkdir -p $MEDIA_ROOT/catami_live
+mkdir -p $MEDIA_ROOT/catami_live/thumbnailimages
+mkdir -p $MEDIA_ROOT/catami_live/importedimages
+
 mkdir -p $MEDIA_ROOT/archive
 chown -R 755 $MEDIA_ROOT/staging
-chown -R 755 $MEDIA_ROOT/images
 chown -R 755 $MEDIA_ROOT/archive
 
 apache2ctl stop
-sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
+#sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
+cp 000-default /etc/apache2/sites-enabled/
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -179,7 +182,6 @@ pip install -r requirements.txt
 cp ../local_settings.py $CATAMI_HOME/catami/catamiPortal
 
 sed -i "s@$MEDIA_ROOT/import@STAGING_IMPORT_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
-sed -i "s@$MEDIA_ROOT/images@IMAGES_ROOT_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 sed -i "s@$MEDIA_ROOT/archive@STAGING_ARCHIVE_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
 #juju-log "syncing database"
@@ -196,6 +198,7 @@ python manage.py syncdb --noinput
 python manage.py migrate --all
 
 python manage.py syncdb --all
+
 #apps=(guardian accounts Force staging dbadmintool easy_thumbnails userena clustering collection waffle)
 #for app in "${apps[@]}"; do
 #    echo Doing south migration for ${app}
@@ -220,6 +223,8 @@ python manage.py syncdb --all
 python manage.py loaddata catamidb/fixtures/waffle.json
 
 python manage.py check_permissions
+
+python manage.py collectstatic
 
 MD5PASSWORD=$(echo $PASSWORD | sha1sum)
 

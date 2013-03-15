@@ -1,18 +1,18 @@
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
-    
-    DocumentRoot MEDIA_ROOT_IMAGES
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride None
-    </Directory>
-    <Directory MEDIA_ROOT_IMAGES>
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride None
-        Order allow,deny
-        allow from all
-    </Directory>
 
+    Alias /static /home/catami/media/static/
+
+
+    WSGIScriptAlias / /home/catami/catamiportal/catami/catamiPortal/wsgi.py
+
+    <Directory /home/catami/catamiportal/catami/catamiPortal>
+    <Files wsgi.py>
+    Order allow,deny
+    Allow from all
+    </Files>
+    </Directory>
+        
     ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
     <Directory "/usr/lib/cgi-bin">
         AllowOverride None
@@ -21,11 +21,11 @@
         Allow from all
     </Directory>
 
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog ${APACHE_LOG_DIR}/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log combined
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>

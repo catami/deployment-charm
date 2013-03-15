@@ -37,6 +37,7 @@ cp catami-colour-by-depth.sld $CATAMI_HOME
 cp local_settings.py $CATAMI_HOME
 
 # make media dirs and setup apache to serve imagery
+mkdir -p $MEDIA_ROOT/static
 mkdir -p $MEDIA_ROOT/staging
 mkdir -p $MEDIA_ROOT/catami_live
 mkdir -p $MEDIA_ROOT/catami_live/thumbnailimages
@@ -46,9 +47,7 @@ mkdir -p $MEDIA_ROOT/archive
 chown -R 755 $MEDIA_ROOT/staging
 chown -R 755 $MEDIA_ROOT/archive
 
-apache2ctl stop
 #sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
-cp 000-default /etc/apache2/sites-enabled/
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -98,7 +97,7 @@ echo "user=$U_NAME, password=$PASSWORD"
 # working
 #==================================================#
 #juju-log "Installing Apache2, Django1.4, postgres, postgis via apt-get"
-apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip tomcat7 python-opencv
+apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip tomcat7 python-opencv libapache2-mod-wsgi
 
 #==================================================#
 # SETUP THE POSGIS TEMPLATE FOR POSTGRESQL
@@ -163,6 +162,11 @@ easy_install pip
 #sometimes it can take a little while for the virtualenv to be initiated, just hold up for a second before continuing
 #sleep 5s
 
+#== 
+# Prepare Apache
+#==
+cp 000-default /etc/apache2/sites-enabled/
+
 #==================================================#
 # PULL THE CATAMI CODE FROM GIT AND INSTALL 
 #==================================================#
@@ -224,8 +228,9 @@ python manage.py loaddata catamidb/fixtures/waffle.json
 
 python manage.py check_permissions
 
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 
+chmod a+rw log/catamiPortal.log
 MD5PASSWORD=$(echo $PASSWORD | sha1sum)
 
 #juju-log "set up Django superuser"

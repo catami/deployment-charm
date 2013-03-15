@@ -2,3 +2,6 @@
 
 #cd /home/catami/catami
 #python manage.py runserver 0.0.0.0:8000
+
+#restart apache and we're off
+apache2ctl graceful

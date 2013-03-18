@@ -191,7 +191,7 @@ sed -i "s@$MEDIA_ROOT/import@STAGING_IMPORT_DIR_TEXT@g" $CATAMI_HOME/catami/cata
 sed -i "s@$MEDIA_ROOT/archive@STAGING_ARCHIVE_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
 #update main django settings for the current server
-sed -i "s@WMS_URL =@WMS_URL = \"$SERVER:8080/geoserver/web \" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
+sed -i "s@WMS_URL =*@WMS_URL = \"$SERVER:8080/geoserver/web \" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 #juju-log "syncing database"
 python manage.py syncdb --noinput
 

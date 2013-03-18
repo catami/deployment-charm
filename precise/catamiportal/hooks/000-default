@@ -2,7 +2,7 @@
     ServerAdmin webmaster@localhost
 
     Alias /static /home/catami/media/static/
-
+    Alias /media /home/catami/media
 
     WSGIScriptAlias / /home/catami/catamiportal/catami/catamiPortal/wsgi.py
 

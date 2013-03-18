@@ -22,10 +22,12 @@
 
 set -eux
 
-CATAMI_HOME=/home/catami/catamiportal
-MEDIA_ROOT=/home/catami/media
-CREDFILE=~/.catami.cred
-GEOSERVER_WAIT_TIME=240 #secs
+SERVER = http://localhost/
+CATAMI_HOME = /home/catami/catamiportal
+MEDIA_ROOT = /home/catami/media
+CREDFILE = ~/.catami.cred
+
+GEOSERVER_WAIT_TIME = 240 #secs ... sometimes the sandbox is running slowly and needs time
 
 mkdir -p /home/catami
 mkdir -p $CATAMI_HOME
@@ -188,6 +190,8 @@ cp ../local_settings.py $CATAMI_HOME/catami/catamiPortal
 sed -i "s@$MEDIA_ROOT/import@STAGING_IMPORT_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 sed -i "s@$MEDIA_ROOT/archive@STAGING_ARCHIVE_DIR_TEXT@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
+#update main django settings for the current server
+sed -i "s@WMS_URL =@WMS_URL = \"$SERVER:8080/geoserver/web \" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 #juju-log "syncing database"
 python manage.py syncdb --noinput
 
@@ -386,7 +390,7 @@ sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /v
   
 #install geoserver templates
 
-sed -i "s@MEDIA_HOST@http://sandbox.catami.org/@g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
+sed -i "s@MEDIA_HOST@http://$SERVER/media/catami_live/importedimages/@g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/

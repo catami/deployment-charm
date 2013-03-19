@@ -40,14 +40,18 @@ cp local_settings.py $CATAMI_HOME
 
 # make media dirs and setup apache to serve imagery
 mkdir -p $MEDIA_ROOT/static
+
 mkdir -p $MEDIA_ROOT/staging
+mkdir -p $MEDIA_ROOT/staging/import
+mkdir -p $MEDIA_ROOT/staging/archive
+
 mkdir -p $MEDIA_ROOT/catami_live
 mkdir -p $MEDIA_ROOT/catami_live/thumbnailimages
 mkdir -p $MEDIA_ROOT/catami_live/importedimages
 
 mkdir -p $MEDIA_ROOT/archive
 chown -R 755 $MEDIA_ROOT/staging
-chown -R 755 $MEDIA_ROOT/archive
+chown -R 755 $MEDIA_ROOT/catami_live
 
 #sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
 
@@ -187,8 +191,8 @@ pip install -r requirements.txt
 # local_settings.py
 cp ../local_settings.py $CATAMI_HOME/catami/catamiPortal
 
-sed -i "s@STAGING_IMPORT_DIR_TEXT@$MEDIA_ROOT/import@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
-sed -i "s@STAGING_ARCHIVE_DIR_TEXT@$MEDIA_ROOT/archive@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
+sed -i "s@STAGING_IMPORT_DIR_TEXT@$MEDIA_ROOT/staging/import@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
+sed -i "s@STAGING_ARCHIVE_DIR_TEXT@$MEDIA_ROOT/staging/archive@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
 #update main django settings for the current server
 sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/web\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py

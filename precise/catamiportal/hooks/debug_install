@@ -22,7 +22,7 @@
 
 set -eux
 
-SERVER="http://localhost"
+SERVER="http://sandbox.catami.org"
 CATAMI_HOME="/home/catami/catamiportal"
 MEDIA_ROOT="/home/catami/media"
 CREDFILE="~/.catami.cred"
@@ -50,8 +50,10 @@ mkdir -p $MEDIA_ROOT/catami_live/thumbnailimages
 mkdir -p $MEDIA_ROOT/catami_live/importedimages
 
 mkdir -p $MEDIA_ROOT/archive
-chown -R 755 $MEDIA_ROOT/staging
-chown -R 755 $MEDIA_ROOT/catami_live
+
+# import fails for chmod 755
+chown -R 777 $MEDIA_ROOT/staging
+chown -R 777 $MEDIA_ROOT/catami_live
 
 #sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
 
@@ -195,7 +197,7 @@ sed -i "s@STAGING_IMPORT_DIR_TEXT@$MEDIA_ROOT/staging/import@g" $CATAMI_HOME/cat
 sed -i "s@STAGING_ARCHIVE_DIR_TEXT@$MEDIA_ROOT/staging/archive@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
 #update main django settings for the current server
-sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/web\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
+sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/wms\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@IMAGES_ROOT.*@IMAGES_ROOT = \'$MEDIA_ROOT/catami_live/importedimages\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@THUMBNAILS_STORAGE_ROOT.*@THUMBNAILS_STORAGE_ROOT = \'$MEDIA_ROOT/catami_live/thumbnailimages\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 
@@ -391,12 +393,11 @@ curl -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
 #TODO change username and password for admin
 # look in /var/lib/tomcat7/webapps/geoserver/data/security
 
-sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g"     /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
+sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g" /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
 sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /var/lib/tomcat7/webapps/geoserver/data/security/users.properties
 
   
-#install geoserver templates
-
+#install geoserver templates for in-view popups
 sed -i "s@MEDIA_HOST@$SERVER/media/catami_live/importedimages/@g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
 sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/

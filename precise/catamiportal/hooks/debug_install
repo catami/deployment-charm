@@ -51,11 +51,8 @@ mkdir -p $MEDIA_ROOT/catami_live/importedimages
 
 mkdir -p $MEDIA_ROOT/archive
 
-# import fails for chmod 755
-chown -R 777 $MEDIA_ROOT/staging
-chown -R 777 $MEDIA_ROOT/catami_live
-chown -R 777 $MEDIA_ROOT/catami_live/thumbnailimages
-chown -R 777 $MEDIA_ROOT/catami_live/importedimages
+chmod -R 777 $MEDIA_ROOT/staging
+chmod -R 777 $MEDIA_ROOT/catami_live
 
 #sed -i "s@$MEDIA_ROOT/staging@MEDIA_ROOT_IMAGES@g" 000-default
 

@@ -189,6 +189,9 @@ cd catami
 #juju-log "Pip installing python dependencies" 
 pip install -r requirements.txt
 
+#do an upgrade, in case we're installing over a pre installed machine.
+pip install --upgrade -r requirements.txt
+
 # local_settings.py
 cp ../local_settings.py $CATAMI_HOME/catami/catamiPortal
 

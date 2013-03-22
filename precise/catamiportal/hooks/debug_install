@@ -186,6 +186,9 @@ cd /home/catami/catamiportal
 git clone https://github.com/catami/catami.git
 cd catami
 
+#why? because otherwise the django-nose install fails.  This is a nose bug over 1 year old. Good work guys.
+rm -fr /usr/local/man
+
 #juju-log "Pip installing python dependencies" 
 pip install -r requirements.txt
 

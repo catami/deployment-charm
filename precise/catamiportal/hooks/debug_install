@@ -360,6 +360,10 @@ sed -i "s/qwer789ASDF456zxcv123/$PASSWORD/g" datastore-config.xml
 
 echo 'setting up geoserver'
 
+#need to create a view on postgres so that geoserver can access measurements
+su postgres -c "psql -d catamidb -c \"CREATE VIEW public.measurements_view AS SELECT p.id, max(CASE WHEN (m.measurement_type_id = 1) THEN m.value ELSE NULL::double precision END) AS temperature, max(CASE WHEN (m.measurement_type_id = 2) THEN m.value ELSE NULL::double precision END) AS salinity, max(CASE WHEN (m.measurement_type_id = 3) THEN m.value ELSE NULL::double precision END) AS pitch, max(CASE WHEN (m.measurement_type_id = 4) THEN m.value ELSE NULL::double precision END) AS roll, max(CASE WHEN (m.measurement_type_id = 5) THEN m.value ELSE NULL::double precision END) AS yaw, max(CASE WHEN (m.measurement_type_id = 6) THEN m.value ELSE NULL::double precision END) AS altitude FROM catamidb_scientificposemeasurement m, catamidb_pose p WHERE (m.pose_id = p.id) GROUP BY p.id;\""
+su postgres -c "psql -d catamidb -c \"GRANT ALL ON public.measurements_view TO PUBLIC;\""
+
 # do this as default admin admin:geoserver
 
 curl -u admin:geoserver -v -XPOST -H 'Content-type: text/xml' \
@@ -371,7 +375,7 @@ curl -u admin:geoserver -XPOST -T datastore-config.xml -H 'Content-type: text/xm
 
 #for catamidb images
 curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
-    -d "<featureType><name>catamidb_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>catamidb_images</name><sql>SELECT public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.id, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id=public.catamidb_image.id</sql><keyColumn>id</keyColumn><geometry><name>position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
+    -d "<featureType><name>catamidb_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>catamidb_images</name><sql>SELECT public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.id, public.catamidb_image.web_location, public.catamidb_image.archive_location, public.catamidb_scientificposemeasurement.measurement_type_id, public.catamidb_scientificposemeasurement.value, public.catamidb_deployment.start_time_stamp, public.catamidb_deployment.end_time_stamp FROM public.catamidb_pose,public.catamidb_image,public.catamidb_scientificposemeasurement, public.catamidb_deployment WHERE public.catamidb_pose.id=public.catamidb_image.id and public.catamidb_pose.id=public.catamidb_scientificposemeasurement.pose_id and public.catamidb_pose.deployment_id=public.catamidb_deployment.id</sql><keyColumn>id</keyColumn><geometry><name>position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
     http://localhost:8080/geoserver/rest/workspaces/catami/datastores/catamidb/featuretypes ;
 
 #for collection images

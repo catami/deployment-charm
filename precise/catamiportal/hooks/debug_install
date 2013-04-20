@@ -104,7 +104,7 @@ echo "user=$U_NAME, password=$PASSWORD"
 # working
 #==================================================#
 #juju-log "Installing Apache2, Django1.4, postgres, postgis via apt-get"
-apt-get install -y python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip tomcat7 python-opencv libapache2-mod-wsgi
+apt-get install -y curl python postgresql-9.1 apache2 python-setuptools postgresql-server-dev-9.1 postgresql-9.1-postgis postgis python-scipy binutils libproj-dev gdal-bin git unzip tomcat7 python-opencv libapache2-mod-wsgi
 
 #==================================================#
 # SETUP THE POSGIS TEMPLATE FOR POSTGRESQL

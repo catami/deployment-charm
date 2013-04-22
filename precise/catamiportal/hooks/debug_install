@@ -190,9 +190,9 @@ cd catami
 rm -fr /usr/local/man
 
 #juju-log "Pip installing python dependencies" 
-pip install -r requirements.txt
+#pip install -r requirements.txt
 
-#do an upgrade, in case we're installing over a pre installed machine.
+#juju-log "Pip installing python dependencies" 
 pip install --upgrade -r requirements.txt
 
 # local_settings.py

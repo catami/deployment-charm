@@ -346,6 +346,9 @@ else
     wget http://downloads.sourceforge.net/project/geoserver/GeoServer/2.2.4/geoserver-2.2.4-war.zip
 fi
 
+#stop tomcat
+service tomcat7 stop
+
 unzip geoserver-2.2.4-war.zip
 sudo cp geoserver.war /var/lib/tomcat7/webapps/
 
@@ -358,6 +361,9 @@ cd $CATAMI_HOME
 sed -i "s/pocock/$U_NAME/g" datastore-config.xml
 sed -i "s/qwer789ASDF456zxcv123/$PASSWORD/g" datastore-config.xml
 
+#restart geoserver
+service tomcat7 start
+
 echo 'setting up geoserver'
 
 #need to create a view on postgres so that geoserver can access measurements
@@ -366,20 +372,20 @@ su postgres -c "psql -d catamidb -c \"GRANT ALL ON public.measurements_view TO P
 
 # do this as default admin admin:geoserver
 
-curl -u admin:geoserver -v -XPOST -H 'Content-type: text/xml' \
+curl --connect-timeout 30 -u admin:geoserver -v -XPOST -H 'Content-type: text/xml' \
    -d '<workspace><name>catami</name></workspace>' \
    http://localhost:8080/geoserver/rest/workspaces ;
 
-curl -u admin:geoserver -XPOST -T datastore-config.xml -H 'Content-type: text/xml' \
+curl --connect-timeout 30 -u admin:geoserver -XPOST -T datastore-config.xml -H 'Content-type: text/xml' \
   http://localhost:8080/geoserver/rest/workspaces/catami/datastores ;
 
 #for catamidb images
-curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
+curl --connect-timeout 30 -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
     -d "<featureType><name>catamidb_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>catamidb_images</name><sql>SELECT public.catamidb_pose.deployment_id,public.catamidb_pose.position,public.catamidb_pose.depth,public.catamidb_image.id,public.catamidb_image.web_location,public.catamidb_image.archive_location,public.catamidb_deployment.start_time_stamp,public.catamidb_deployment.end_time_stamp,public.measurements_view.temperature,public.measurements_view.salinity,public.measurements_view.pitch,public.measurements_view.roll,public.measurements_view.yaw,public.measurements_view.altitude FROM public.catamidb_pose,public.catamidb_image,public.measurements_view, public.catamidb_deployment WHERE public.catamidb_pose.id=public.catamidb_image.id and public.catamidb_pose.id=public.measurements_view.id and public.catamidb_pose.deployment_id=public.catamidb_deployment.id</sql><keyColumn>id</keyColumn><geometry><name>position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
     http://localhost:8080/geoserver/rest/workspaces/catami/datastores/catamidb/featuretypes ;
 
 #for collection images
-curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
+curl --connect-timeout 30 -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
     -d "<featureType><name>collection_images</name><metadata><entry key=\"JDBC_VIRTUAL_TABLE\"><virtualTable><name>collection_images</name><sql>SELECT public.catamidb_image.id, public.collection_collection_images.collection_id, public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.collection_collection_images,public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id = public.catamidb_image.pose_id AND public.collection_collection_images.image_id=public.catamidb_image.id</sql><keyColumn>id</keyColumn><geometry><name>position</name><type>Point</type><srid>4326</srid></geometry></virtualTable></entry></metadata></featureType>" \
     http://localhost:8080/geoserver/rest/workspaces/catami/datastores/catamidb/featuretypes ;
 
@@ -387,14 +393,14 @@ curl -u admin:geoserver -XPOST -H 'Content-type: text/xml' \
 #if doing this on an existing server with same style name that has been deleted from geoserver,
 #need to actually delete the styles/catami-colour-by-depth.sld file first - geoserver does not delete it for some reason
 
-curl -u admin:geoserver -XPOST -H 'Content-type: application/vnd.ogc.sld+xml' \
+curl --connect-timeout 30 -u admin:geoserver -XPOST -H 'Content-type: application/vnd.ogc.sld+xml' \
   -d @catami-colour-by-depth.sld http://localhost:8080/geoserver/rest/styles ;
 
-curl -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
+curl --connect-timeout 30 -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
   -d '<layer><defaultStyle><name>catami-colour-by-depth</name></defaultStyle><enabled>true</enabled></layer>' \
   http://localhost:8080/geoserver/rest/layers/catami:catamidb_images ;
 
-curl -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
+curl --connect-timeout 30 -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
   -d '<layer><defaultStyle><name>catami-colour-by-depth</name></defaultStyle><enabled>true</enabled></layer>' \
   http://localhost:8080/geoserver/rest/layers/catami:collection_images ;
 

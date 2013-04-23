@@ -424,3 +424,5 @@ sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl /var/li
 echo 'Restarting tomcat'
 sudo service tomcat7 restart
 
+echo 'Restarting apache'
+sudo service apach2 restart

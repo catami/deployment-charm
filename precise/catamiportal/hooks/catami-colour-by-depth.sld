@@ -35,7 +35,7 @@
                </CssParameter>
              </Fill>
            </Mark>
-           <Size>6</Size>
+           <Size>12</Size>
          </Graphic>
       </PointSymbolizer>
     </Rule>

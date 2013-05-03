@@ -1,0 +1,19 @@
+<dataStore>
+  <id>DataStoreInfoImpl--60a33765:13d8635fa2b:-7ffb</id>
+  <name>catamidb</name>
+  <type>PostGIS</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl--60a33765:13d8635fa2b:-7ffd</id>
+  </workspace>
+  <connectionParameters>
+    <entry key="port">5432</entry>
+    <entry key="passwd">crypt1:x1xpZhxIUWr2tifJYMef9ISAKQIEiV9ClOHanUmbfHo=</entry>
+    <entry key="dbtype">postgis</entry>
+    <entry key="host">localhost</entry>
+    <entry key="user">pocock</entry>
+    <entry key="database">catamidb</entry>
+    <entry key="namespace">http://catami</entry>
+  </connectionParameters>
+  <__default>false</__default>
+</dataStore>

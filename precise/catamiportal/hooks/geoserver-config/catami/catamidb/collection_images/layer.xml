@@ -1,0 +1,18 @@
+<layer>
+  <name>collection_images</name>
+  <id>LayerInfoImpl--60a33765:13d8635fa2b:-7ff7</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--60a33765:13d8635fa2b:-7ff5</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--60a33765:13d8635fa2b:-7ff8</id>
+  </resource>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <queryable>true</queryable>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

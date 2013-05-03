@@ -1,0 +1,57 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--60a33765:13d8635fa2b:-7ff8</id>
+  <name>collection_images</name>
+  <nativeName>collection_images</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--60a33765:13d8635fa2b:-7ffc</id>
+  </namespace>
+  <title>collection_images</title>
+  <keywords>
+    <string>collection_images</string>
+    <string>features</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-1.0</minx>
+    <maxx>0.0</maxx>
+    <miny>-1.0</miny>
+    <maxy>0.0</maxy>
+    <crs>EPSG:4326</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-1.0</minx>
+    <maxx>0.0</maxx>
+    <miny>-1.0</miny>
+    <maxy>0.0</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
+  DATUM[&quot;WGS84&quot;, 
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>collection_images</name>
+        <sql>SELECT public.catamidb_image.id, public.collection_collection_images.collection_id, public.catamidb_pose.deployment_id, public.catamidb_pose.position, public.catamidb_pose.depth, public.catamidb_image.web_location, public.catamidb_image.archive_location FROM public.collection_collection_images,public.catamidb_pose,public.catamidb_image WHERE public.catamidb_pose.id = public.catamidb_image.pose_id AND public.collection_collection_images.image_id=public.catamidb_image.id</sql>
+        <keyColumn>id</keyColumn>
+        <geometry>
+          <name>position</name>
+          <type>Point</type>
+          <srid>4326</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--60a33765:13d8635fa2b:-7ffb</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+</featureType>

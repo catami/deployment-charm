@@ -7,7 +7,7 @@
 #
 # sudo ./destroy  # kills any old dbases
 # opt 1)
-# sudo ./install -u <username> -p <password> -r <git-revision-of-source> -h <hostname>
+# sudo ./install -u <username> -p <password> -b <git-branch-name> -h <hostname>
 # opt 2)
 # sudo ./install -f <credential file>
 # opt 3)
@@ -24,8 +24,10 @@
 
 set -eux
 
-SERVER = "127.0.0.1"
+SERVER="127.0.0.1"
 CREDFILE="~/.catami.cred"
+BRANCH=""
+CURRENT_DIR=$(pwd)
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -45,8 +47,8 @@ while getopts "u:p:f:" opt; do
     f)
         CREDFILE=$OPTARG
         ;;
-    r)
-        REVISION=$OPTARG
+    b)
+        BRANCH=$OPTARG
         ;;
     h)  
     	SERVER=$OPTARG
@@ -73,9 +75,15 @@ fi
 
 echo "user=$U_NAME, password=$PASSWORD"
 
+#install dependencies and then the application
 source install_dependencies
 source install_catami
-source install_geoserver
+
+# go back to the install scripts dir
+cd $CURRENT_DIR
+
+#install geoserver now
+source install_geoserver2
 
 #==================================================#
 # ADD CRON JOB TO DO A HOURLY BACKUP.

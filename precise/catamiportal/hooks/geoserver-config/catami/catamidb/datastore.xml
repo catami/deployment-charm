@@ -8,9 +8,9 @@
   </workspace>
   <connectionParameters>
     <entry key="port">5432</entry>
-    <entry key="passwd">crypt1:x1xpZhxIUWr2tifJYMef9ISAKQIEiV9ClOHanUmbfHo=</entry>
+    <entry key="passwd">qwer789ASDF456zxcv123</entry>
     <entry key="dbtype">postgis</entry>
-    <entry key="host">localhost</entry>
+    <entry key="host">127.0.0.1</entry>
     <entry key="user">pocock</entry>
     <entry key="database">catamidb</entry>
     <entry key="namespace">http://catami</entry>

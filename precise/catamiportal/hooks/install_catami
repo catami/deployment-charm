@@ -7,15 +7,9 @@
 CATAMI_HOME="/home/catami/catamiportal"
 MEDIA_ROOT="/home/catami/media"
 
-
 mkdir -p /home/catami
 mkdir -p $CATAMI_HOME
 mkdir -p $MEDIA_ROOT
-
-# Copy some files over for geoserver
-#cp datastore-config.xml $CATAMI_HOME
-#cp catami-colour-by-depth.sld $CATAMI_HOME
-#cp local_settings.py $CATAMI_HOME
 
 # make media dirs and setup apache to serve imagery
 mkdir -p $MEDIA_ROOT/static
@@ -107,30 +101,32 @@ easy_install pip
 #==================================================#
 #juju-log "Pulling CATAMI code from git"
 
-# !! For debugging.  remove existing directories
-#rm -r /home/catami
-
-cd $CATAMI_HOME/catami/catamiportal
-git clone https://github.com/catami/catami.git
-cd catami
+cd /home/catami/catamiportal
 
 #move to the revision to deploy
-if [ -n ${REVISION} ] # if a revision hash is given
+if [ -n ${BRANCH} ] # if a branch name is given
 then
-    git reset --hard $REVISION
+    #git reset --hard $REVISION
+    git clone -b $BRANCH https://github.com/catami/catami.git 
+else
+    git clone https://github.com/catami/catami.git	
 fi
+
+cd catami
 
 #why? because otherwise the django-nose install fails.  This is a nose bug over 1 year old. Good work guys.
 rm -fr /usr/local/man
 
 #juju-log "Pip installing python dependencies" 
-pip install --upgrade -r requirements.txt
+#pip install --upgrade -r requirements.txt
+pip install -r requirements.txt
 
 # local_settings.py
-cp ../local_settings.py $CATAMI_HOME/catami/catamiPortal
+touch $CATAMI_HOME/catami/catamiPortal/local_settings.py 
 
 sed -i "s@STAGING_IMPORT_DIR_TEXT@$MEDIA_ROOT/staging/import@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 sed -i "s@STAGING_ARCHIVE_DIR_TEXT@$MEDIA_ROOT/staging/archive@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
+sed -i "s@STAGING_WEBIMAGE_MAX_SIZE@(1360,1024)@g" $CATAMI_HOME/catami/catamiPortal/local_settings.py
 
 #update main django settings for the current server
 sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/wms\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
@@ -161,6 +157,10 @@ chmod a+rw log/catamiPortal.log
 #juju-log "set up Django superuser"
 echo "Configuring Django superuser"
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('$U_NAME', 'catami@ivec.org', '$PASSWORD')" | ./manage.py shell
+
+#need to create a view on postgres so that geoserver can access measurements
+su postgres -c "psql -d catamidb -c \"CREATE VIEW public.measurements_view AS SELECT p.id, max(CASE WHEN (m.measurement_type_id = 1) THEN m.value ELSE NULL::double precision END) AS temperature, max(CASE WHEN (m.measurement_type_id = 2) THEN m.value ELSE NULL::double precision END) AS salinity, max(CASE WHEN (m.measurement_type_id = 3) THEN m.value ELSE NULL::double precision END) AS pitch, max(CASE WHEN (m.measurement_type_id = 4) THEN m.value ELSE NULL::double precision END) AS roll, max(CASE WHEN (m.measurement_type_id = 5) THEN m.value ELSE NULL::double precision END) AS yaw, max(CASE WHEN (m.measurement_type_id = 6) THEN m.value ELSE NULL::double precision END) AS altitude FROM catamidb_scientificposemeasurement m, catamidb_pose p WHERE (m.pose_id = p.id) GROUP BY p.id;\""
+su postgres -c "psql -d catamidb -c \"GRANT ALL ON public.measurements_view TO PUBLIC;\""
 
 #==================================================#
 # SET UP APACHE PORT REVERSE PROXY

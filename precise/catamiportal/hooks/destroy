@@ -2,10 +2,9 @@
 
 CRON_LOG_FILE="/etc/cron.hourly/catamiPortalLog.py"
 CRON_BAK_FILE="/etc/cron.hourly/catamiPortalBak.py"
-CATAMI_DIR="/home/catami/catamiPortal"
+CATAMI_DIR="/home/catami/catamiportal"
 
 service tomcat7 stop
-#sudo pip uninstall django-guardian easy-thumbnails
 
 #==================================================#
 # DESTORY THE DATABASE, TEST DATABASE AND SUPERUSER
@@ -14,11 +13,6 @@ echo "Destroying database, test database and superuser"
 su postgres -c "dropdb catamidb"
 su postgres -c "dropdb test_catamidb"
 su postgres -c "dropuser pocock"
-
-apps=(guardian Force staging dbadmintool easy_thumbnails userena clustering collection features)
-for app in "${apps[@]}"; do
-    su postgres -c "dropdb ${app}"
-done
 
 #==================================================#
 # REMOVE THE LOG FILES
@@ -45,12 +39,4 @@ fi
 #==================================================#
 # REMOVE TOMCAT AND GEOSERVER
 #==================================================#
-sudo service tomcat7 stop
-sudo rm -r /var/lib/tomcat7/webapps/geoserver
-#sudo apt-get remove --purge tomcat
-sudo service tomcat7 start
-
-#bug fix -- not sure why need this twice
-su postgres -c "dropuser pocock"
-
-service tomcat7 start
+source destroy_geoserver

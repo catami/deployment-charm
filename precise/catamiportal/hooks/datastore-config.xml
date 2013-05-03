@@ -1,11 +1,11 @@
 <dataStore>
   <name>catamidb</name>
   <connectionParameters>
-    <host>the_host</host>
+    <host>127.0.0.1</host>
     <port>5432</port>
     <database>catamidb</database>
-    <user>the_username</user>
-    <passwd>the_password</passwd>
+    <user>pocock</user>
+    <passwd>qwer789ASDF456zxcv123</passwd>
     <dbtype>postgis</dbtype>
   </connectionParameters>
 </dataStore>

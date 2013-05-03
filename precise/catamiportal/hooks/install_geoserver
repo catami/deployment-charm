@@ -21,7 +21,8 @@ service tomcat7 stop
 
 #put geoserver into tomcat
 unzip geoserver-2.2.4-war.zip
-sudo cp geoserver.war /var/lib/tomcat7/webapps/
+#unzip geoserver.war -d geoserver
+sudo mv geoserver.war /var/lib/tomcat7/webapps/
 
 #Geoserver takes tome time to finish installing.  TODO: find someway of monitoring
 sleep $GEOSERVER_WAIT_TIME
@@ -70,16 +71,19 @@ curl --connect-timeout 30 -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
 
 #TODO change username and password for admin
 # look in /var/lib/tomcat7/webapps/geoserver/data/security
+#touch /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old 
 sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g" /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
 sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /var/lib/tomcat7/webapps/geoserver/data/security/users.properties
+
+#sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g" /var/lib/tomcat7/webapps/geoserver/data/security/users.properties
   
 #install geoserver templates for in-view popups
-sed -i "s@MEDIA_HOST@$SERVER/media/catami_live/importedimages/@g" $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl
+sed -i "s@MEDIA_HOST@$SERVER/media/catami_live/importedimages/@g" content.ftl
 sudo mkdir /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
-sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/catamidb_images/
-sudo cp $CATAMI_HOME/catami/webinterface/templates/geoserver/content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/collection_images/
+sudo cp header.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp footer.ftl /var/lib/tomcat7/webapps/geoserver/data/templates/
+sudo cp content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/catamidb_images/
+sudo cp content.ftl /var/lib/tomcat7/webapps/geoserver/data/workspaces/catami/catamidb/collection_images/
 
 echo 'Restarting tomcat'
 sudo service tomcat7 restart

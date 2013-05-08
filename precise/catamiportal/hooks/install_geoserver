@@ -28,11 +28,11 @@ sudo mv geoserver.war /var/lib/tomcat7/webapps/
 sleep $GEOSERVER_WAIT_TIME
 
 # sed replace the username and password in datastore-config.xml
-sed -i "s/the_username/$U_NAME/g" datastore-config.xml
-sed -i "s/the_password/$PASSWORD/g" datastore-config.xml
+sed -i "s@the_username@$U_NAME@g" datastore-config.xml
+sed -i "s@the_password@$PASSWORD@g" datastore-config.xml
 
 # relace the host with given host
-sed -i "s/the_host/$SERVER/g" datastore-config.xml
+sed -i "s@the_host@$SERVER@g" datastore-config.xml
 
 #restart geoserver
 service tomcat7 start
@@ -72,7 +72,7 @@ curl --connect-timeout 30 -u admin:geoserver -XPUT -H 'Content-type: text/xml' \
 #TODO change username and password for admin
 # look in /var/lib/tomcat7/webapps/geoserver/data/security
 #touch /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old 
-sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g" /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
+sed -i "s@admin=geoserver@$U_NAME=$PASSWORD@g" /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old
 sudo mv /var/lib/tomcat7/webapps/geoserver/data/security/users.properties.old /var/lib/tomcat7/webapps/geoserver/data/security/users.properties
 
 #sed -i "s/admin=geoserver/$U_NAME=$PASSWORD/g" /var/lib/tomcat7/webapps/geoserver/data/security/users.properties

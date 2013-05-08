@@ -133,6 +133,10 @@ sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/wms\" @g" $CATAMI_HOME/
 sed -i "s@IMAGES_ROOT.*@IMAGES_ROOT = \'$MEDIA_ROOT/catami_live/importedimages\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@THUMBNAILS_STORAGE_ROOT.*@THUMBNAILS_STORAGE_ROOT = \'$MEDIA_ROOT/catami_live/thumbnailimages\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 
+#configure project username and password
+sed -i "s@pocock@$U_NAME@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
+sed -i "s@qwer789ASDF456zxcv123@$PASSWORD@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
+
 #juju-log "syncing database"
 python manage.py syncdb --noinput
 

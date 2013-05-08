@@ -5,27 +5,27 @@
 # -------------------------------------------------#
 
 CATAMI_HOME="/home/catami/catamiportal"
-MEDIA_ROOT="/home/catami/media"
+MEDIA_ROOT="/mnt/catami-media"
 
-mkdir -p /home/catami
+#mkdir -p /home/catami
 mkdir -p $CATAMI_HOME
-mkdir -p $MEDIA_ROOT
+#mkdir -p $MEDIA_ROOT
 
 # make media dirs and setup apache to serve imagery
-mkdir -p $MEDIA_ROOT/static
+#mkdir -p $MEDIA_ROOT/static
 
-mkdir -p $MEDIA_ROOT/staging
-mkdir -p $MEDIA_ROOT/staging/import
-mkdir -p $MEDIA_ROOT/staging/archive
+#mkdir -p $MEDIA_ROOT/staging
+#mkdir -p $MEDIA_ROOT/staging/import
+#mkdir -p $MEDIA_ROOT/staging/archive
 
-mkdir -p $MEDIA_ROOT/catami_live
-mkdir -p $MEDIA_ROOT/catami_live/thumbnailimages
-mkdir -p $MEDIA_ROOT/catami_live/importedimages
+#mkdir -p $MEDIA_ROOT/catami_live
+#mkdir -p $MEDIA_ROOT/catami_live/thumbnailimages
+#mkdir -p $MEDIA_ROOT/catami_live/importedimages
 
-mkdir -p $MEDIA_ROOT/archive
+#mkdir -p $MEDIA_ROOT/archive
 
-chmod -R 777 $MEDIA_ROOT/staging
-chmod -R 777 $MEDIA_ROOT/catami_live
+#chmod -R 777 $MEDIA_ROOT/staging
+#chmod -R 777 $MEDIA_ROOT/catami_live
 
 #== 
 # Prepare Apache
@@ -168,6 +168,13 @@ su postgres -c "psql -d catamidb -c \"GRANT ALL ON public.measurements_view TO P
 a2enmod proxy_http
 a2enmod rewrite
 
+#change the run user and groups of apache, so that our underlying storage system can work with the data we are storing
+sed -i "s@APACHE_RUN_USER=.*@APACHE_RUN_USER=catami @g" /etc/apache2/envvars
+sed -i "s@APACHE_RUN_GROUP=.*@APACHE_RUN_GROUP=catami-data @g" /etc/apache2/envvars
+
+#need to give catami user access to here, so it can run apache
+chown -R catami /var/lock/apache2
+
 echo "Catami Portal install complete"
 
 #==================================================#
@@ -184,21 +191,23 @@ echo "Catami Portal install complete"
 #==================================================#
 export DJANGO_SETTINGS_MODULE=catamiPortal.settings
 
-echo "Creating cron job for backup"
-BAKSCRIPT=/etc/cron.hourly/catamiPortalBak.py
-sudo touch $BAKSCRIPT
-sudo echo \#! /usr/bin/env python >> $BAKSCRIPT
-sudo echo import os >> $BAKSCRIPT
-sudo echo import sys >> $BAKSCRIPT
-sudo echo os.chdir\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
-sudo echo sys.path.append\(\'$CATAMI_HOME/catami/dbadmintool\'\) >> $BAKSCRIPT
-sudo echo sys.path.append\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
-sudo echo os.environ\[\'DJANGO_SETTINGS_MODULE\' \] = \"catamiPortal.settings\" >> $BAKSCRIPT
-sudo echo import dbadmintool.administratorbot as administratorbot >> $BAKSCRIPT
-sudo echo bender = administratorbot.Robot\(\) >> $BAKSCRIPT
-sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/dbadmintool/backup/\'\) >> ${BAKSCRIPT}
+#echo "Creating cron job for backup"
+#cp catami-postgres-backup-cron.sh /etc/cron.hourly/
+#BAKSCRIPT=/etc/cron.hourly/catami-postgres-backup-cron.sh
+#sudo touch $BAKSCRIPT
+#sudo echo \#! /usr/bin/env python >> $BAKSCRIPT
+#sudo echo import os >> $BAKSCRIPT
+#sudo echo import sys >> $BAKSCRIPT
+#sudo echo os.chdir\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
+#sudo echo sys.path.append\(\'$CATAMI_HOME/catami/dbadmintool\'\) >> $BAKSCRIPT
+#sudo echo sys.path.append\(\'$CATAMI_HOME/catami\'\) >> $BAKSCRIPT
+#sudo echo os.environ\[\'DJANGO_SETTINGS_MODULE\' \] = \"catamiPortal.settings\" >> $BAKSCRIPT
+#sudo echo import dbadmintool.administratorbot as administratorbot >> $BAKSCRIPT
+#sudo echo bender = administratorbot.Robot\(\) >> $BAKSCRIPT
+#sudo echo bender.make_local_backup\(directory=\'${CATAMI_HOME}/catami/dbadmintool/backup/\'\) >> ${BAKSCRIPT}
 
-chmod +x $BAKSCRIPT
+
+#chmod +x $BAKSCRIPT
 
 #==================================================#
 # ADD CRON SCRIPT TO LOG DATABASE DATA
@@ -220,5 +229,12 @@ sudo echo dbReportBot.collect_stats\(\) >> ${LOGSCRIPT}
 chmod +x $LOGSCRIPT
 
 #juju-log "catamiportal install complete"
+
+#give permissions all to the catami users
+chown -R catami $CATAMI_HOME
+chgrp -R catami $CATAMI_HOME
+
+#chown -R catami $MEDIA_ROOT
+#chgrp -R catami $MEDIA_ROOT
 
 echo "... Done"

@@ -36,7 +36,7 @@ OPTFIND=1
 U_NAME=""
 PASSWORD=""
 
-while getopts "u:p:f:" opt; do
+while getopts "u:p:f:b:h:" opt; do
     case "$opt" in
     u)
         U_NAME=$OPTARG
@@ -73,18 +73,25 @@ then
     PASSWORD=${param[2]} 
 fi
 
-echo "user=$U_NAME, password=$PASSWORD"
+echo "user=$U_NAME, password=$PASSWORD, branch=$BRANCH"
 
 #install dependencies and then the application
-source install_dependencies
-source install_catami
+. ./install_dependencies
+. ./install_catami
 
 # go back to the install scripts dir
 cd $CURRENT_DIR
 
 #install geoserver now
-source install_geoserver2
+. ./install_geoserver2
 
+cd $CURRENT_DIR
 #==================================================#
 # ADD CRON JOB TO DO A HOURLY BACKUP.
 #==================================================#
+echo "Creating cron job for backup"
+cp catami-postgres-backup-cron.sh /etc/cron.hourly/
+BAKSCRIPT=/etc/cron.hourly/catami-postgres-backup-cron.sh
+chmod +x $BAKSCRIPT
+
+service apache2 restart

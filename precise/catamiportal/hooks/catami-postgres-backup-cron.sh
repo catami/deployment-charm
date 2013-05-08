@@ -3,7 +3,6 @@ mkdir /home/catami/backups
 cd /home/catami/backups
 DATE_TIME=$(date +"%d-%m-%y-%H-%M-%s")
 echo $DATE_TME
-#touch catamidb.${DATE_TIME}.dat.sql
 su postgres -c "pg_dump catamidb" > catamidb.${DATE_TIME}.dat.sql
 tar -cf catamidb.${DATE_TIME}.tar catamidb.${DATE_TIME}.dat.sql
 gzip catamidb.${DATE_TIME}.tar

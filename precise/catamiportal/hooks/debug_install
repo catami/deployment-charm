@@ -24,7 +24,7 @@
 
 set -eux
 
-SERVER="127.0.0.1"
+SERVER="http://sandbox.catami.org"
 CREDFILE="~/.catami.cred"
 BRANCH=""
 CURRENT_DIR=$(pwd)

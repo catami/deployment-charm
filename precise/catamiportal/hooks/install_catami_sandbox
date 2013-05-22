@@ -12,9 +12,6 @@ mkdir -p /home/catami
 mkdir -p $CATAMI_HOME
 mkdir -p $MEDIA_ROOT
 
-# Copy some files over for geoserver
-cp datastore-config.xml $CATAMI_HOME
-cp catami-colour-by-depth.sld $CATAMI_HOME
 cp local_settings.py $CATAMI_HOME
 
 # make media dirs and setup apache to serve imagery
@@ -179,11 +176,11 @@ a2enmod proxy_http
 a2enmod rewrite
 
 #change the run user and groups of apache, so that our underlying storage system can work with the data we are storing
-sed -i "s@APACHE_RUN_USER=.*@APACHE_RUN_USER=catami @g" /etc/apache2/envvars
-sed -i "s@APACHE_RUN_GROUP=.*@APACHE_RUN_GROUP=catami-data @g" /etc/apache2/envvars
+# sed -i "s@APACHE_RUN_USER=.*@APACHE_RUN_USER=catami @g" /etc/apache2/envvars
+# sed -i "s@APACHE_RUN_GROUP=.*@APACHE_RUN_GROUP=catami-data @g" /etc/apache2/envvars
 
 #need to give catami user access to here, so it can run apache
-chown -R catami /var/lock/apache2
+# chown -R catami /var/lock/apache2
 
 echo "Catami Portal install complete"
 
@@ -241,10 +238,10 @@ chmod +x $LOGSCRIPT
 #juju-log "catamiportal install complete"
 
 #give permissions all to the catami users
-chown -R catami $CATAMI_HOME
-chgrp -R catami $CATAMI_HOME
+# chown -R catami $CATAMI_HOME
+# chgrp -R catami $CATAMI_HOME
 
-chown -R catami $MEDIA_ROOT
-chgrp -R catami $MEDIA_ROOT
+# chown -R catami $MEDIA_ROOT
+# chgrp -R catami $MEDIA_ROOT
 
 echo "... Done"

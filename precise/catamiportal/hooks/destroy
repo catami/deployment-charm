@@ -2,7 +2,7 @@
 
 CRON_LOG_FILE="/etc/cron.hourly/catamiPortalLog.py"
 CRON_BAK_FILE="/etc/cron.hourly/catami-postgres-backup-cron.sh"
-CATAMI_DIR="/home/catami/catamiportal"
+CATAMI_DIR="/home/catami/catami"
 
 service tomcat7 stop
 

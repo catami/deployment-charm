@@ -7,7 +7,7 @@
 #
 # sudo ./destroy  # kills any old dbases
 # opt 1)
-# sudo ./install -u <username> -p <password> -b <git-branch-name> -h <hostname>
+# sudo ./install -u <username> -p <password> -b <git-branch-name> -h <hostname> -path <install-path>
 # opt 2)
 # sudo ./install -f <credential file>
 # opt 3)
@@ -28,6 +28,7 @@ SERVER="http://sandbox.catami.org"
 CREDFILE="~/.catami.cred"
 BRANCH=""
 CURRENT_DIR=$(pwd)
+PATH="."
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -36,7 +37,7 @@ OPTFIND=1
 U_NAME=""
 PASSWORD=""
 
-while getopts "u:p:f:b:h:" opt; do
+while getopts "u:p:f:b:h:path" opt; do
     case "$opt" in
     u)
         U_NAME=$OPTARG
@@ -52,7 +53,10 @@ while getopts "u:p:f:b:h:" opt; do
         ;;
     h)  
         SERVER=$OPTARG
-        ;;      
+        ;;
+    path)  
+        PATH=$OPTARG
+        ;;          
     esac
 done
 
@@ -73,7 +77,7 @@ then
     PASSWORD=${param[2]} 
 fi
 
-echo "user=$U_NAME, password=$PASSWORD, branch=$BRANCH"
+echo "user=$U_NAME, password=$PASSWORD, branch=$BRANCH, path=$PATH"
 
 #install dependencies and then the application
 . ./install_dependencies
@@ -89,9 +93,9 @@ cd $CURRENT_DIR
 #==================================================#
 # ADD CRON JOB TO DO A HOURLY BACKUP.
 #==================================================#
-echo "Creating cron job for backup"
-cp catami-postgres-backup-cron.sh /etc/cron.hourly/
-BAKSCRIPT=/etc/cron.hourly/catami-postgres-backup-cron.sh
-chmod +x $BAKSCRIPT
+#echo "Creating cron job for backup"
+#cp catami-postgres-backup-cron.sh /etc/cron.hourly/
+#BAKSCRIPT=/etc/cron.hourly/catami-postgres-backup-cron.sh
+#chmod +x $BAKSCRIPT
 
 service apache2 restart

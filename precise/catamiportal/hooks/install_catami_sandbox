@@ -110,12 +110,13 @@ rm -fr /usr/local/man
 pip install -r requirements.txt
 
 # local_settings.py
-#touch $CATAMI_HOME/catami/catamiPortal/local_settings.py 
+touch $CATAMI_HOME/catami/catamiPortal/local_settings.py 
 
 #update main django settings for the current server
 sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/wms\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@IMPORT_PATH.*@IMPORT_PATH = \'$IMPORT_PATH\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@STATIC_ROOT.*@STATIC_ROOT = \'$STATIC_ROOT\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
+sed -i "s@MEDIA_ROOT.*@MEDIA_ROOT = \'$MEDIA_ROOT\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 
 #configure project username and password
 sed -i "s@pocock@$U_NAME@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
@@ -155,6 +156,7 @@ su postgres -c "psql -d catamidb -c \"GRANT ALL ON public.measurements_view TO P
 #==================================================#
 a2enmod proxy_http
 a2enmod rewrite
+chown -R www-data:www-data $CATAMI_HOME
 
 echo "Catami Portal install complete"
 

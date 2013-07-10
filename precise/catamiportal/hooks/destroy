@@ -9,6 +9,10 @@ service tomcat7 stop
 #==================================================#
 # DESTORY THE DATABASE, TEST DATABASE AND SUPERUSER
 #==================================================#
+
+#start postgres first
+/etc/init.d/postgresql restart
+
 echo "Destroying database, test database and superuser" 
 su postgres -c "dropdb catamidb"
 su postgres -c "dropdb test_catamidb"

@@ -28,7 +28,7 @@ SERVER="http://sandbox.catami.org"
 CREDFILE="~/.catami.cred"
 BRANCH=""
 CURRENT_DIR=$(pwd)
-PATH="."
+INSTALL_PATH="/home/catami"
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -37,7 +37,7 @@ OPTFIND=1
 U_NAME=""
 PASSWORD=""
 
-while getopts "u:p:f:b:h:path" opt; do
+while getopts "u:p:f:b:h:i:" opt; do
     case "$opt" in
     u)
         U_NAME=$OPTARG
@@ -54,9 +54,6 @@ while getopts "u:p:f:b:h:path" opt; do
     h)  
         SERVER=$OPTARG
         ;;
-    path)  
-        PATH=$OPTARG
-        ;;          
     esac
 done
 

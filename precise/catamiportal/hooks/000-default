@@ -1,12 +1,12 @@
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
 
-    Alias /static /home/catami/media/static/
-    Alias /media /home/catami/media
+    Alias /static /home/catami/catami-media/static/
+    Alias /media /home/catami/catami-media
 
-    WSGIScriptAlias / /home/catami/catamiportal/catami/catamiPortal/wsgi.py
+    WSGIScriptAlias / /home/catami/catami/catamiPortal/wsgi.py
 
-    <Directory /home/catami/catamiportal/catami/catamiPortal>
+    <Directory /home/catami/catami/catamiPortal>
     <Files wsgi.py>
     Order allow,deny
     Allow from all

@@ -1,12 +1,12 @@
 <layer>
-  <name>catamidb_images</name>
-  <id>LayerInfoImpl--476b19ba:13f885da7ca:-7fe8</id>
+  <name>annotationset_images</name>
+  <id>LayerInfoImpl-45fae3b1:13fb241f342:-6073</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-45fae3b1:13fb24b201d:-4a3a</id>
+    <id>StyleInfoImpl-45fae3b1:13fb24b201d:-436</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--476b19ba:13f885da7ca:-7fe9</id>
+    <id>FeatureTypeInfoImpl-45fae3b1:13fb241f342:-6074</id>
   </resource>
   <enabled>true</enabled>
   <attribution>

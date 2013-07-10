@@ -1,12 +1,17 @@
 <layer>
-  <name>catamidb_images</name>
-  <id>LayerInfoImpl--476b19ba:13f885da7ca:-7fe8</id>
+  <name>project_images</name>
+  <id>LayerInfoImpl--476b19ba:13f885da7ca:-7fe5</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-45fae3b1:13fb24b201d:-4a3a</id>
   </defaultStyle>
+  <styles class="linked-hash-set">
+    <style>
+      <id>StyleInfoImpl-45fae3b1:13fb24b201d:-4a3a</id>
+    </style>
+  </styles>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--476b19ba:13f885da7ca:-7fe9</id>
+    <id>FeatureTypeInfoImpl--476b19ba:13f885da7ca:-7fe6</id>
   </resource>
   <enabled>true</enabled>
   <attribution>

@@ -1,15 +1,14 @@
 <layer>
-  <name>catamidb_images</name>
-  <id>LayerInfoImpl--66de89ce:14014ef5817:-7ffd</id>
+  <name>catamidb_deployment</name>
+  <id>LayerInfoImpl--ddbdabc:13fc6760253:-7ffe</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-45fae3b1:13fb24b201d:-4a3a</id>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe0</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--66de89ce:14014ef5817:-7ffe</id>
+    <id>FeatureTypeInfoImpl--ddbdabc:13fc6760253:-7fff</id>
   </resource>
   <enabled>true</enabled>
-  <queryable>false</queryable>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>

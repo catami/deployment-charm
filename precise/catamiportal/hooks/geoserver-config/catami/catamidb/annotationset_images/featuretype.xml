@@ -21,10 +21,10 @@
   AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</nativeCRS>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>3.955078125</minx>
-    <maxx>113.889946025</maxx>
-    <miny>-22.1014120057</miny>
-    <maxy>-1.8814086914063</maxy>
+    <minx>113.879608037</minx>
+    <maxx>113.885322986</maxx>
+    <miny>-22.1008429583</miny>
+    <maxy>-22.0957679674</maxy>
     <crs>EPSG:4326</crs>
   </nativeBoundingBox>
   <latLonBoundingBox>
@@ -48,7 +48,7 @@
     <entry key="JDBC_VIRTUAL_TABLE">
       <virtualTable>
         <name>annotationset_images</name>
-        <sql>select catamidb_genericimage.position, catamidb_genericimage.depth, projects_genericannotationset_generic_images.genericannotationset_id from projects_genericannotationset_generic_images, catamidb_genericimage where projects_genericannotationset_generic_images.genericimage_id=catamidb_genericimage.id</sql>
+        <sql>select catamidb_image.position, catamidb_image.depth, projects_annotationset_images.annotationset_id from projects_annotationset_images, catamidb_image where projects_annotationset_images.image_id=catamidb_image.id</sql>
         <geometry>
           <name>position</name>
           <type>Point</type>

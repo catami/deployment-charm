@@ -1,14 +1,14 @@
 <featureType>
-  <id>FeatureTypeInfoImpl--66de89ce:14014ef5817:-7ffe</id>
-  <name>catamidb_images</name>
-  <nativeName>catamidb_image</nativeName>
+  <id>FeatureTypeInfoImpl--ddbdabc:13fc6760253:-7fff</id>
+  <name>catamidb_deployment</name>
+  <nativeName>catamidb_deployment</nativeName>
   <namespace>
     <id>NamespaceInfoImpl--476b19ba:13f885da7ca:-7feb</id>
   </namespace>
-  <title>catamidb_images</title>
+  <title>catamidb_deployment</title>
   <keywords>
-    <string>catamidb_image</string>
     <string>features</string>
+    <string>catamidb_genericdeployment</string>
   </keywords>
   <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 
   DATUM[&quot;World Geodetic System 1984&quot;, 
@@ -21,17 +21,17 @@
   AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</nativeCRS>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>113.877624511719</minx>
-    <maxx>113.889953613281</maxx>
-    <miny>-22.1014137268066</miny>
-    <maxy>-22.0950088500977</maxy>
+    <minx>113.877624962</minx>
+    <maxx>113.889946025</maxx>
+    <miny>-22.1014120057</miny>
+    <maxy>-22.0950089862</maxy>
     <crs>EPSG:4326</crs>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>113.877624511719</minx>
-    <maxx>113.889953613281</maxx>
-    <miny>-22.1014137268066</miny>
-    <maxy>-22.0950088500977</maxy>
+    <minx>113.877624962</minx>
+    <maxx>113.889946025</maxx>
+    <miny>-22.1014120057</miny>
+    <maxy>-22.0950089862</maxy>
     <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
   DATUM[&quot;WGS84&quot;, 
     SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
@@ -44,7 +44,17 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
-    <entry key="cachingEnabled">false</entry>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>catamidb_deployment</name>
+        <sql>select id, short_name, transect_shape, campaign_id from public.catamidb_deployment</sql>
+        <geometry>
+          <name>transect_shape</name>
+          <type>Polygon</type>
+          <srid>4326</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
   </metadata>
   <store class="dataStore">
     <id>DataStoreInfoImpl--476b19ba:13f885da7ca:-7fea</id>

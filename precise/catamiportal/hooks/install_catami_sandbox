@@ -13,8 +13,6 @@ STATIC_ROOT="$MEDIA_ROOT/static"
 mkdir -p $CATAMI_HOME
 mkdir -p $MEDIA_ROOT
 
-cp local_settings.py $CATAMI_HOME
-
 # make media dirs and setup apache to serve imagery
 mkdir -p $MEDIA_ROOT/static
 mkdir -p $MEDIA_ROOT/importedimages
@@ -146,10 +144,6 @@ chmod a+rw log/catamiPortal.log
 #juju-log "set up Django superuser"
 echo "Configuring Django superuser"
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('$U_NAME', 'catami@ivec.org', '$PASSWORD')" | ./manage.py shell
-
-#need to create a view on postgres so that geoserver can access measurements
-su postgres -c "psql -d catamidb -c \"CREATE VIEW public.measurements_view AS SELECT p.id, max(CASE WHEN (m.measurement_type_id = 1) THEN m.value ELSE NULL::double precision END) AS temperature, max(CASE WHEN (m.measurement_type_id = 2) THEN m.value ELSE NULL::double precision END) AS salinity, max(CASE WHEN (m.measurement_type_id = 3) THEN m.value ELSE NULL::double precision END) AS pitch, max(CASE WHEN (m.measurement_type_id = 4) THEN m.value ELSE NULL::double precision END) AS roll, max(CASE WHEN (m.measurement_type_id = 5) THEN m.value ELSE NULL::double precision END) AS yaw, max(CASE WHEN (m.measurement_type_id = 6) THEN m.value ELSE NULL::double precision END) AS altitude FROM catamidb_scientificposemeasurement m, catamidb_pose p WHERE (m.pose_id = p.id) GROUP BY p.id;\""
-su postgres -c "psql -d catamidb -c \"GRANT ALL ON public.measurements_view TO PUBLIC;\""
 
 #==================================================#
 # SET UP APACHE PORT REVERSE PROXY

@@ -24,10 +24,11 @@
 
 set -eux
 
-SERVER="127.0.0.1"
+SERVER="http://catami.org"
 CREDFILE="~/.catami.cred"
 BRANCH=""
 CURRENT_DIR=$(pwd)
+INSTALL_PATH="/home/catami"
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD
@@ -83,15 +84,16 @@ echo "user=$U_NAME, password=$PASSWORD, branch=$BRANCH"
 cd $CURRENT_DIR
 
 #install geoserver now
-. ./install_geoserver2
+. ./install_geoserver
 
 cd $CURRENT_DIR
+
 #==================================================#
 # ADD CRON JOB TO DO A HOURLY BACKUP.
 #==================================================#
-echo "Creating cron job for backup"
-cp catami-postgres-backup-cron.sh /etc/cron.hourly/
-BAKSCRIPT=/etc/cron.hourly/catami-postgres-backup-cron.sh
-chmod +x $BAKSCRIPT
+#echo "Creating cron job for backup"
+#cp catami-postgres-backup-cron.sh /etc/cron.hourly/
+#BAKSCRIPT=/etc/cron.hourly/catami-postgres-backup-cron.sh
+#chmod +x $BAKSCRIPT
 
 service apache2 restart

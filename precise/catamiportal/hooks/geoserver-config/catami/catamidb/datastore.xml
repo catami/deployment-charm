@@ -10,7 +10,7 @@
   <connectionParameters>
     <entry key="Connection timeout">20</entry>
     <entry key="port">5432</entry>
-    <entry key="passwd">crypt1:koL7uOG4J5IqnZLcm8ISPfsBsmNX+uCmXSamqq9hq+8=</entry>
+    <entry key="passwd">the_password</entry>
     <entry key="dbtype">postgis</entry>
     <entry key="host">localhost</entry>
     <entry key="validate connections">true</entry>
@@ -25,7 +25,7 @@
     <entry key="Max open prepared statements">50</entry>
     <entry key="preparedStatements">false</entry>
     <entry key="Estimated extends">true</entry>
-    <entry key="user">pocock</entry>
+    <entry key="user">the_username</entry>
     <entry key="min connections">1</entry>
   </connectionParameters>
   <__default>false</__default>

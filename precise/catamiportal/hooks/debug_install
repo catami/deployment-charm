@@ -84,7 +84,7 @@ echo "user=$U_NAME, password=$PASSWORD, branch=$BRANCH, path=$PATH"
 cd $CURRENT_DIR
 
 #install geoserver now
-. ./install_geoserver2
+. ./install_geoserver
 
 cd $CURRENT_DIR
 #==================================================#

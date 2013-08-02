@@ -151,7 +151,7 @@ echo "from django.contrib.auth.models import User; User.objects.create_superuser
 #==================================================#
 a2enmod proxy_http
 a2enmod rewrite
-chown -R www-data:www-data $CATAMI_HOME
+chown -R catami:catami-data $CATAMI_HOME
 
 echo "Catami Portal install complete"
 

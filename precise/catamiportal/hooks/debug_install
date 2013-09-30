@@ -28,7 +28,7 @@ SERVER="http://sandbox.catami.org"
 CREDFILE="~/.catami.cred"
 BRANCH=""
 CURRENT_DIR=$(pwd)
-INSTALL_PATH="/var/www/catami"
+INSTALL_PATH="/var/www"
 
 #==================================================#
 # GRAB THE U_NAME AND PASSWORD

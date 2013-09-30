@@ -83,11 +83,14 @@ echo "user=$U_NAME, password=$PASSWORD, branch=$BRANCH, path=$PATH"
 # go back to the install scripts dir
 cd $CURRENT_DIR
 
-#install local dolly 
-. ./install_dolly
-
 #install geoserver now
 . ./install_geoserver
+
+# go back to the install scripts dir
+cd $CURRENT_DIR
+
+#install local dolly 
+. ./install_dolly
 
 cd $CURRENT_DIR
 #==================================================#

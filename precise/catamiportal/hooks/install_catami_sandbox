@@ -128,6 +128,8 @@ python manage.py syncdb --noinput
 #==================================================#
 
 #!!! accounts may need to be after accounts in the following list of apps
+#!!! catamidb MUST be migrated first.
+python manage.py migrate catamidb
 python manage.py migrate --all
 python manage.py syncdb --all --noinput
 

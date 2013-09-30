@@ -1,0 +1,17 @@
+#!/bin/bash -x
+#==================================================#
+# SETUP DOLLY
+#==================================================#
+
+echo 'Setting up dolly'
+
+sudo apt-get install maven2
+sudo apt-get install default-jdk
+
+git clone https://github.com/catami/dolly.git
+
+cd dolly
+
+mvn clean:clean
+mvn compile war:war
+sudo cp target/dolly.war /var/lib/tomcat7/webapps

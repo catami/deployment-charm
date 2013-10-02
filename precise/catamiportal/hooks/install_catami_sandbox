@@ -111,7 +111,9 @@ pip install -r requirements.txt
 touch $CATAMI_HOME/catami/catamiPortal/local_settings.py 
 
 #update main django settings for the current server
+sed -i "s@DOLLY_SEARCH_URL =.*@DOLLY_SEARCH_URL = \"$SERVER:8080/dolly/search\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@WMS_URL =.*@WMS_URL = \"$SERVER:8080/geoserver/wms\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
+sed -i "s@WFS_URL =.*@WFS_URL = \"$SERVER:8080/geoserver/wfs\" @g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@IMPORT_PATH.*@IMPORT_PATH = \'$IMPORT_PATH\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@STATIC_ROOT.*@STATIC_ROOT = \'$STATIC_ROOT\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py
 sed -i "s@MEDIA_ROOT.*@MEDIA_ROOT = \'$MEDIA_ROOT\'@g" $CATAMI_HOME/catami/catamiPortal/conf/settings/default.py

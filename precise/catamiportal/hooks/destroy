@@ -43,4 +43,5 @@ fi
 #==================================================#
 # REMOVE TOMCAT AND GEOSERVER
 #==================================================#
+source destroy_dolly
 source destroy_geoserver

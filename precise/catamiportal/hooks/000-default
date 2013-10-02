@@ -21,8 +21,8 @@
                Allow from all
        </Proxy>
 
-       ProxyPass               /geoserver http://localhost:8080/geonetwork
-       ProxyPassReverse        /geoserver http://localhost:8080/geonetwork
+       ProxyPass               /geoserver http://localhost:8080/geoserver
+       ProxyPassReverse        /geoserver http://localhost:8080/geoserver
 
        ProxyPreserveHost On
     

@@ -22,7 +22,7 @@ chmod -R 777 $MEDIA_ROOT
 #== 
 # Prepare Apache
 #==
-cp 000-default /etc/apache2/sites-enabled/
+cp 000-default /etc/apache2/sites-enabled/000-default.conf
 
 #==================================================#
 # SETUP THE POSGIS TEMPLATE FOR POSTGRESQL
